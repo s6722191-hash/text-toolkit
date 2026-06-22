@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartText Tools - Free Online Text Formatter & Counter</title>
+    
+    <!-- SEO Meta Tags for Google Ranking -->
+    <meta name="description" content="Free online text utility tool to count words, remove extra spaces, convert case, and generate clean slugs instantly.">
+    <meta name="keywords" content="word counter, remove extra spaces online, case converter, text formatter, free text tools">
+    <meta name="robots" content="index, follow">
+    
     <!-- Tailwind CSS for Modern UI -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
@@ -27,7 +33,7 @@
             <!-- Live Stats Counter -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 text-center">
                 <div class="bg-slate-900 p-3 rounded-lg border border-slate-700">
-                    <span class="block text-xs uppercase text-gray-400 font-semibold">Characters</span>
+                    <span class="block text-xs uppercase text-gray-400 font-semibold">Characters (No Spaces)</span>
                     <span id="charCount" class="text-xl font-bold text-blue-400">0</span>
                 </div>
                 <div class="bg-slate-900 p-3 rounded-lg border border-slate-700">
@@ -58,22 +64,22 @@
             </div>
         </div>
 
-        <!-- Ad Placeholder (Future AdSense Slot) -->
+        <!-- Ad Placeholder -->
         <div class="bg-slate-900 border border-dashed border-slate-700 rounded-xl p-4 text-center text-xs text-gray-500 mb-8 tracking-wider">
             ADVERTISEMENT SPACE (PLACE AD CODE HERE LATER)
         </div>
     </div>
 
-    <!-- Core Logic (JavaScript) -->
+    <!-- Core Logic -->
     <script>
         const textarea = document.getElementById('mainInput');
         
-        // Real-time Analytics
         textarea.addEventListener('input', () => {
             const text = textarea.value;
             
-            // Character Count
-            document.getElementById('charCount').textContent = text.length;
+            // FIXED: Counts characters excluding all types of spaces
+            const noSpacesText = text.replace(/\s/g, '');
+            document.getElementById('charCount').textContent = noSpacesText.length;
             
             // Word Count
             const words = text.trim().split(/\s+/).filter(word => word.length > 0);
@@ -88,29 +94,17 @@
             document.getElementById('paraCount').textContent = text.length > 0 ? paras.length : 0;
         });
 
-        // Text Transformation Engine
         function transformText(type) {
             let currentText = textarea.value;
             if(!currentText.trim()) return;
 
             switch(type) {
-                case 'upper':
-                    textarea.value = currentText.toUpperCase();
-                    break;
-                case 'lower':
-                    textarea.value = currentText.toLowerCase();
-                    break;
-                case 'title':
-                    textarea.value = currentText.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
-                    break;
-                case 'clean':
-                    textarea.value = currentText.replace(/\s+/g, ' ').trim();
-                    break;
-                case 'slug':
-                    textarea.value = currentText.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim();
-                    break;
+                case 'upper': textarea.value = currentText.toUpperCase(); break;
+                case 'lower': textarea.value = currentText.toLowerCase(); break;
+                case 'title': textarea.value = currentText.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()); break;
+                case 'clean': textarea.value = currentText.replace(/\s+/g, ' ').trim(); break;
+                case 'slug': textarea.value = currentText.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim(); break;
             }
-            // Trigger input event to update counts after transformation
             textarea.dispatchEvent(new Event('input'));
         }
 
