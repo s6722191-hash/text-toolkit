@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartText Tools - Free Online Text Formatter & Counter</title>
+    <!-- Tailwind CSS for Modern UI -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        body { background-color: #0f172a; color: #f8fafc; font-family: sans-serif; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-blue-500 mb-2">⚡ SmartText Utility Pro</h1>
+            <p class="text-gray-400 text-sm md:text-base">Format, clean, and analyze your text instantly. No logs, 100% secure.</p>
+        </header>
+
+        <!-- Main Workspace -->
+        <div class="bg-slate-800 rounded-2xl p-6 shadow-xl border border-slate-700 mb-6">
+            <!-- Textarea -->
+            <textarea id="mainInput" class="w-full h-64 bg-slate-900 text-slate-100 p-4 rounded-xl border border-slate-600 focus:outline-none focus:border-blue-500 resize-y placeholder-gray-500 text-lg mb-4" placeholder="Type or paste your text here..."></textarea>
+
+            <!-- Live Stats Counter -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 text-center">
+                <div class="bg-slate-900 p-3 rounded-lg border border-slate-700">
+                    <span class="block text-xs uppercase text-gray-400 font-semibold">Characters</span>
+                    <span id="charCount" class="text-xl font-bold text-blue-400">0</span>
+                </div>
+                <div class="bg-slate-900 p-3 rounded-lg border border-slate-700">
+                    <span class="block text-xs uppercase text-gray-400 font-semibold">Words</span>
+                    <span id="wordCount" class="text-xl font-bold text-emerald-400">0</span>
+                </div>
+                <div class="bg-slate-900 p-3 rounded-lg border border-slate-700">
+                    <span class="block text-xs uppercase text-gray-400 font-semibold">Lines</span>
+                    <span id="lineCount" class="text-xl font-bold text-amber-400">0</span>
+                </div>
+                <div class="bg-slate-900 p-3 rounded-lg border border-slate-700">
+                    <span class="block text-xs uppercase text-gray-400 font-semibold">Paragraphs</span>
+                    <span id="paraCount" class="text-xl font-bold text-purple-400">0</span>
+                </div>
+            </div>
+
+            <!-- Action Buttons Grid -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                <button onclick="transformText('upper')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-lg transition text-sm">UPPERCASE</button>
+                <button onclick="transformText('lower')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-lg transition text-sm">lowercase</button>
+                <button onclick="transformText('title')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-lg transition text-sm">Title Case</button>
+                <button onclick="transformText('clean')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-3 rounded-lg transition text-sm">Remove Extra Spaces</button>
+                <button onclick="transformText('slug')" class="bg-amber-600 hover:bg-amber-700 text-white font-medium py-2 px-3 rounded-lg transition text-sm">Convert to Slug</button>
+                <button onclick="clearText()" class="bg-rose-600 hover:bg-rose-700 text-white font-medium py-2 px-3 rounded-lg transition text-sm">Clear Content</button>
+                <button onclick="copyToClipboard()" class="col-span-2 sm:col-span-1 md:col-span-2 bg-slate-700 hover:bg-slate-600 text-white font-bold py-2 px-3 rounded-lg transition text-sm flex items-center justify-center gap-1">
+                    📋 Copy Result
+                </button>
+            </div>
+        </div>
+
+        <!-- Ad Placeholder (Future AdSense Slot) -->
+        <div class="bg-slate-900 border border-dashed border-slate-700 rounded-xl p-4 text-center text-xs text-gray-500 mb-8 tracking-wider">
+            ADVERTISEMENT SPACE (PLACE AD CODE HERE LATER)
+        </div>
+    </div>
+
+    <!-- Core Logic (JavaScript) -->
+    <script>
+        const textarea = document.getElementById('mainInput');
+        
+        // Real-time Analytics
+        textarea.addEventListener('input', () => {
+            const text = textarea.value;
+            
+            // Character Count
+            document.getElementById('charCount').textContent = text.length;
+            
+            // Word Count
+            const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+            document.getElementById('wordCount').textContent = words.length;
+            
+            // Line Count
+            const lines = text.split('\n').filter(line => line.length > 0);
+            document.getElementById('lineCount').textContent = text.length > 0 ? lines.length : 0;
+            
+            // Paragraph Count
+            const paras = text.split(/\n\s*\n/).filter(p => p.trim().length > 0);
+            document.getElementById('paraCount').textContent = text.length > 0 ? paras.length : 0;
+        });
+
+        // Text Transformation Engine
+        function transformText(type) {
+            let currentText = textarea.value;
+            if(!currentText.trim()) return;
+
+            switch(type) {
+                case 'upper':
+                    textarea.value = currentText.toUpperCase();
+                    break;
+                case 'lower':
+                    textarea.value = currentText.toLowerCase();
+                    break;
+                case 'title':
+                    textarea.value = currentText.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+                    break;
+                case 'clean':
+                    textarea.value = currentText.replace(/\s+/g, ' ').trim();
+                    break;
+                case 'slug':
+                    textarea.value = currentText.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').trim();
+                    break;
+            }
+            // Trigger input event to update counts after transformation
+            textarea.dispatchEvent(new Event('input'));
+        }
+
+        function clearText() {
+            textarea.value = '';
+            textarea.dispatchEvent(new Event('input'));
+        }
+
+        function copyToClipboard() {
+            if(!textarea.value) return;
+            navigator.clipboard.writeText(textarea.value);
+            alert('Text copied to clipboard! 👍');
+        }
+    </script>
+</body>
+</html>
