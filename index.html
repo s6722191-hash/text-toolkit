@@ -51,16 +51,60 @@
             </div>
 
             <!-- Action Buttons Grid -->
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                <button onclick="transformText('upper')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-lg transition text-sm">UPPERCASE</button>
-                <button onclick="transformText('lower')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-lg transition text-sm">lowercase</button>
-                <button onclick="transformText('title')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-lg transition text-sm">Title Case</button>
-                <button onclick="transformText('clean')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-3 rounded-lg transition text-sm">Remove Extra Spaces</button>
-                <button onclick="transformText('slug')" class="bg-amber-600 hover:bg-amber-700 text-white font-medium py-2 px-3 rounded-lg transition text-sm">Convert to Slug</button>
-                <button onclick="clearText()" class="bg-rose-600 hover:bg-rose-700 text-white font-medium py-2 px-3 rounded-lg transition text-sm">Clear Content</button>
-                <button onclick="copyToClipboard()" class="col-span-2 sm:col-span-1 md:col-span-2 bg-slate-700 hover:bg-slate-600 text-white font-bold py-2 px-3 rounded-lg transition text-sm flex items-center justify-center gap-1">
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-6">
+                <button onclick="transformText('upper')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-lg transition text-sm cursor-pointer">UPPERCASE</button>
+                <button onclick="transformText('lower')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-lg transition text-sm cursor-pointer">lowercase</button>
+                <button onclick="transformText('title')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-lg transition text-sm cursor-pointer">Title Case</button>
+                <button onclick="transformText('clean')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-3 rounded-lg transition text-sm cursor-pointer">Remove Extra Spaces</button>
+                <button onclick="transformText('slug')" class="bg-amber-600 hover:bg-amber-700 text-white font-medium py-2 px-3 rounded-lg transition text-sm cursor-pointer">Convert to Slug</button>
+                <button onclick="clearText()" class="bg-rose-600 hover:bg-rose-700 text-white font-medium py-2 px-3 rounded-lg transition text-sm cursor-pointer">Clear Content</button>
+                <button onclick="copyToClipboard()" class="col-span-2 sm:col-span-1 md:col-span-2 bg-slate-700 hover:bg-slate-600 text-white font-bold py-2 px-3 rounded-lg transition text-sm flex items-center justify-center gap-1 cursor-pointer">
                     📋 Copy Result
                 </button>
+            </div>
+
+            <hr class="border-slate-700 my-6">
+
+            <!-- Advanced Utilities Panel -->
+            <div class="space-y-4">
+                <h3 class="text-md font-bold text-slate-400 uppercase tracking-wider mb-2">🛠️ Advanced Smart Tools</h3>
+                
+                <!-- Row 1: Random Text & Password Generators -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Random Text Generator -->
+                    <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-700/80 flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <label class="text-xs text-slate-400 font-semibold uppercase">Paras:</label>
+                            <input type="number" id="loremCount" min="1" max="5" value="1" class="w-12 p-1 bg-slate-800 border border-slate-600 rounded text-center text-sm text-white focus:outline-none focus:border-blue-500">
+                        </div>
+                        <button onclick="generateRandomText()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-1.5 px-3 rounded-lg transition text-xs cursor-pointer">
+                            ✨ Random Text
+                        </button>
+                    </div>
+
+                    <!-- Password Generator -->
+                    <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-700/80 flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <label class="text-xs text-slate-400 font-semibold uppercase">Length:</label>
+                            <input type="number" id="passLength" min="6" max="30" value="12" class="w-14 p-1 bg-slate-800 border border-slate-600 rounded text-center text-sm text-white focus:outline-none focus:border-blue-500">
+                        </div>
+                        <button onclick="generatePassword()" class="bg-teal-600 hover:bg-teal-700 text-white font-medium py-1.5 px-3 rounded-lg transition text-xs cursor-pointer">
+                            🔑 Generate Pass
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Row 2: Secret Message Encryption Panel -->
+                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-700/80 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div class="text-left">
+                        <span class="block text-xs uppercase text-gray-400 font-semibold">Secret Messaging</span>
+                        <p class="text-xs text-slate-500">Encrypt text into secure code or decrypt it back.</p>
+                    </div>
+                    <div class="flex gap-2 w-full sm:w-auto">
+                        <button onclick="cipherText('encrypt')" class="w-1/2 sm:w-auto bg-violet-600 hover:bg-violet-700 text-white font-medium py-1.5 px-4 rounded-lg transition text-xs cursor-pointer">🔒 Encrypt</button>
+                        <button onclick="cipherText('decrypt')" class="w-1/2 sm:w-auto bg-fuchsia-600 hover:bg-fuchsia-700 text-white font-medium py-1.5 px-4 rounded-lg transition text-xs cursor-pointer">🔓 Decrypt</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -117,6 +161,64 @@
             if(!textarea.value) return;
             navigator.clipboard.writeText(textarea.value);
             alert('Text copied to clipboard! 👍');
+        }
+
+        // ================= NEW TOOLS LOGIC =================
+
+        // 1. Random Text Generator Function
+        document.getElementById('loremCount').addEventListener('change', function() {
+            if(this.value > 5) this.value = 5;
+            if(this.value < 1) this.value = 1;
+        });
+
+        function generateRandomText() {
+            const paragraphs = [
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ac ut id urna, pretium sed. Morbi feugiat interdum purus et sodales. Mauris sit amet massa eget lectus eleifend dictum ut id erat.",
+                "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Aliquam sit amet sodales dolor. Phasellus dictum justo a purus facilisis, vel congue elit rhoncus.",
+                "Morbi sit amet ex ac tellus tincidunt dictum. Aliquam convallis neque sed hendrerit sodales. Interdum et malesuada fames ac ante ipsum primis in faucibus. Proin gravida finibus ex vel eleifend.",
+                "Nulla facilisi. Etiam nec tortor in massa efficitur dictum. Curabitur vel accumsan diam, sed facilisis erat. Sed congue, sapien elementum aliquet finibus, nisl ante lacinia lectus, id sodales lorem.",
+                "Curabitur non interdum arcu. Cras imperdiet elementum metus vel laoreet. Duis elementum pretium ex at pretium. Ut eu varius justo, sit amet vulputate nisi. Vivamus elementum convallis tellus."
+            ];
+            
+            const count = parseInt(document.getElementById('loremCount').value) || 1;
+            let result = [];
+            for (let i = 0; i < count; i++) {
+                result.push(paragraphs[i % paragraphs.length]);
+            }
+            
+            textarea.value = result.join("\n\n");
+            textarea.dispatchEvent(new Event('input'));
+        }
+
+        // 2. Password Generator Function
+        function generatePassword() {
+            const length = parseInt(document.getElementById('passLength').value) || 12;
+            const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=";
+            let password = "";
+            for (let i = 0; i < length; i++) {
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            textarea.value = password;
+            textarea.dispatchEvent(new Event('input'));
+        }
+
+        // 3. Secret Message Function (Base64 Cipher)
+        function cipherText(action) {
+            const text = textarea.value.trim();
+            if(!text) return;
+
+            try {
+                if (action === 'encrypt') {
+                    // Encrypts text to base64 format safely
+                    textarea.value = btoa(unescape(encodeURIComponent(text)));
+                } else if (action === 'decrypt') {
+                    // Decrypts base64 string back to standard text
+                    textarea.value = decodeURIComponent(escape(atob(text)));
+                }
+                textarea.dispatchEvent(new Event('input'));
+            } catch (err) {
+                alert("Error: Invalid formatting for encryption/decryption! ❌");
+            }
         }
     </script>
 </body>
