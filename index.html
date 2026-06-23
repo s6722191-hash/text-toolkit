@@ -5,10 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartText Tools - Free Online Text Formatter & Counter</title>
     
+    <!-- SEO Meta Tags for Google Ranking -->
     <meta name="description" content="Free online text utility tool to count words, remove extra spaces, convert case, and generate clean slugs instantly.">
     <meta name="keywords" content="word counter, remove extra spaces online, case converter, text formatter, free text tools">
     <meta name="robots" content="index, follow">
     
+    <!-- Tailwind CSS for Modern UI -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         /* Custom styles for animations and smooth transitions */
@@ -31,20 +33,28 @@
 <body id="bodyTheme" class="p-4 md:p-8 bg-slate-900 text-slate-100 min-h-screen transition-theme">
 
     <div class="max-w-4xl mx-auto">
-        <header class="relative text-center mb-8 mt-4">
-            <button onclick="toggleTheme()" id="themeBtn" class="absolute top-0 right-0 p-2.5 bg-slate-800 dark:bg-slate-700 border border-slate-700 dark:border-slate-600 rounded-xl hover:bg-slate-700 transition active:scale-90 cursor-pointer shadow-md text-lg" title="Toggle Theme">
-                🌙
-            </button>
+        <!-- Header & Theme Toggle (FIXED OVERLAP BUG) -->
+        <header class="text-center mb-8 mt-4">
+            <!-- Top bar with button moved up neatly -->
+            <div class="flex justify-end mb-2">
+                <button onclick="toggleTheme()" id="themeBtn" class="p-2.5 bg-slate-800 dark:bg-slate-700 border border-slate-700 dark:border-slate-600 rounded-xl hover:bg-slate-700 transition active:scale-90 cursor-pointer shadow-md text-lg" title="Toggle Theme">
+                    🌙
+                </button>
+            </div>
             
+            <!-- Animated Heading Logo -->
             <h1 class="text-3xl md:text-4xl font-extrabold mb-2 flex justify-center items-center gap-1">
                 <span>⚡</span><span class="animate-shimmer">SmartText Utility Pro</span>
             </h1>
             <p id="subHeader" class="text-gray-400 text-sm md:text-base transition-theme">Format, clean, and analyze your text instantly. No logs, 100% secure.</p>
         </header>
 
-        <div id="mainCard" class="bg-slate-800 rounded-2xl p-6 shadow-xl border border-slate-700 mb-8 transition-theme">
+        <!-- Main Workspace Card -->
+        <div id="mainCard" class="bg-slate-800 rounded-2xl p-6 shadow-xl border border-slate-700 mb-6 transition-theme">
+            <!-- Textarea -->
             <textarea id="mainInput" class="w-full h-64 bg-slate-900 text-slate-100 p-4 rounded-xl border border-slate-600 focus:outline-none focus:border-blue-500 resize-y placeholder-gray-500 text-lg mb-4 transition-theme" placeholder="Type or paste your text here..."></textarea>
 
+            <!-- Live Stats Counter -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 text-center">
                 <div id="statBox1" class="bg-slate-900 p-3 rounded-lg border border-slate-700 transition-theme">
                     <span class="block text-xs uppercase text-gray-400 font-semibold">Characters (No Spaces)</span>
@@ -64,6 +74,7 @@
                 </div>
             </div>
 
+            <!-- Action Buttons Grid -->
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-6">
                 <button onclick="transformText('upper')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-lg transition transform active:scale-95 text-sm cursor-pointer shadow-md">UPPERCASE</button>
                 <button onclick="transformText('lower')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-lg transition transform active:scale-95 text-sm cursor-pointer shadow-md">lowercase</button>
@@ -78,10 +89,13 @@
 
             <hr class="border-slate-700 my-6">
 
+            <!-- Advanced Utilities Panel -->
             <div class="space-y-4">
                 <h3 id="panelTitle" class="text-md font-bold text-slate-400 uppercase tracking-wider mb-2 transition-theme">🛠️ Advanced Smart Tools</h3>
                 
+                <!-- Row 1: Random Text & Password Generators -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Random Text Generator -->
                     <div id="utilBox1" class="bg-slate-900/60 p-4 rounded-xl border border-slate-700/80 flex items-center justify-between gap-2 transition-theme">
                         <div class="flex items-center gap-2">
                             <label id="lblParas" class="text-xs text-slate-400 font-semibold uppercase transition-theme">Paras:</label>
@@ -92,6 +106,7 @@
                         </button>
                     </div>
 
+                    <!-- Password Generator -->
                     <div id="utilBox2" class="bg-slate-900/60 p-4 rounded-xl border border-slate-700/80 flex items-center justify-between gap-2 transition-theme">
                         <div class="flex items-center gap-2">
                             <label id="lblLength" class="text-xs text-slate-400 font-semibold uppercase transition-theme">Length:</label>
@@ -103,6 +118,7 @@
                     </div>
                 </div>
 
+                <!-- Row 2: Secret Message Encryption Panel -->
                 <div id="utilBox3" class="bg-slate-900/60 p-4 rounded-xl border border-slate-700/80 flex flex-col sm:flex-row items-center justify-between gap-3 transition-theme">
                     <div class="text-left">
                         <span id="lblSecret" class="block text-xs uppercase text-gray-400 font-semibold transition-theme">Secret Messaging</span>
@@ -115,8 +131,46 @@
                 </div>
             </div>
         </div>
+
+        <!-- Usage Notes Section -->
+        <div id="notesSection" class="bg-slate-800/50 border border-slate-700/60 rounded-2xl p-5 mb-6 transition-theme">
+            <h3 id="notesTitle" class="text-sm font-bold text-blue-400 mb-3 flex items-center gap-1.5 uppercase tracking-wider">
+                💡 Usage Notes & Tips
+            </h3>
+            <ul class="space-y-2 text-xs md:text-sm text-slate-400 transition-theme">
+                <li class="flex gap-2">
+                    <span class="text-blue-500">✔</span>
+                    <span><strong>Privacy Secure:</strong> Data is processed locally in your browser. No logs are saved.</span>
+                </li>
+                <li class="flex gap-2">
+                    <span class="text-emerald-500">✔</span>
+                    <span><strong>Secret Messaging:</strong> Share encrypted codes safely. Friends can decode them here via <strong>Decrypt</strong>.</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Developer Professional Footer (Notes Added Here) -->
+        <footer id="footerSection" class="bg-slate-800 border border-slate-700 rounded-2xl p-5 text-center transition-theme mb-8">
+            <p id="devTitle" class="text-sm font-bold text-slate-300 tracking-wide mb-3">
+                👨‍💻 Created By <span class="text-blue-400 font-extrabold">Salman S Kennedy</span>
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-6 text-xs md:text-sm">
+                <span id="feedbackTxt" class="text-slate-400 font-medium">For Feedback:</span>
+                
+                <!-- Phone Link -->
+                <a href="tel:+923066551022" class="flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 transition font-semibold transform active:scale-95 bg-slate-900/60 px-3 py-1.5 rounded-lg border border-slate-700/50">
+                    📞 +92 306 6551022
+                </a>
+                
+                <!-- Gmail Link -->
+                <a href="mailto:4salmanskennedy@gmail.com" class="flex items-center gap-1.5 text-amber-400 hover:text-amber-300 transition font-semibold transform active:scale-95 bg-slate-900/60 px-3 py-1.5 rounded-lg border border-slate-700/50">
+                    ✉ 4salmanskennedy@gmail.com
+                </a>
+            </div>
+        </footer>
     </div>
 
+    <!-- Core Logic -->
     <script>
         const textarea = document.getElementById('mainInput');
         
@@ -161,11 +215,11 @@
             textarea.dispatchEvent(new Event('input'));
         }
 
+        // Copy Clipboard Feedback Integration
         function copyToClipboard() {
             if(!textarea.value) return;
             navigator.clipboard.writeText(textarea.value);
             
-            // Responsive button visual feedback
             const copyBtn = document.getElementById('copyBtn');
             const oldHtml = copyBtn.innerHTML;
             copyBtn.innerHTML = "✓ Copied!";
@@ -177,7 +231,7 @@
             }, 1500);
         }
 
-        // 1. Random Text Generator Function
+        // Random Text Generator Logic
         document.getElementById('loremCount').addEventListener('change', function() {
             if(this.value > 5) this.value = 5;
             if(this.value < 1) this.value = 1;
@@ -202,7 +256,7 @@
             textarea.dispatchEvent(new Event('input'));
         }
 
-        // 2. Password Generator Function
+        // Password Generator Logic
         function generatePassword() {
             const length = parseInt(document.getElementById('passLength').value) || 12;
             const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=";
@@ -214,7 +268,7 @@
             textarea.dispatchEvent(new Event('input'));
         }
 
-        // 3. Secret Message Function (Base64 Cipher)
+        // Secret Messaging Logic
         function cipherText(action) {
             const text = textarea.value.trim();
             if(!text) return;
@@ -231,7 +285,7 @@
             }
         }
 
-        // 4. Dark / Light Mode Theme Engine Logic
+        // Theme Switcher Engine
         let isDarkMode = true;
         
         function toggleTheme() {
@@ -246,12 +300,17 @@
             const lblLength = document.getElementById('lblLength');
             const lblSecret = document.getElementById('lblSecret');
             const subSecret = document.getElementById('subSecret');
+            const notesSection = document.getElementById('notesSection');
+            const notesTitle = document.getElementById('notesTitle');
+            const footerSection = document.getElementById('footerSection');
+            const devTitle = document.getElementById('devTitle');
+            const feedbackTxt = document.getElementById('feedbackTxt');
             
             const statBoxes = [1, 2, 3, 4].map(id => document.getElementById(`statBox${id}`));
             const utilBoxes = [1, 2, 3].map(id => document.getElementById(`utilBox${id}`));
 
             if (!isDarkMode) {
-                // Apply Light Mode Classes
+                // Light Mode Configuration
                 body.classList.replace('bg-slate-900', 'bg-slate-50');
                 body.classList.replace('text-slate-100', 'text-slate-800');
                 mainCard.classList.replace('bg-slate-800', 'bg-white');
@@ -267,19 +326,26 @@
                 lblLength.classList.replace('text-slate-400', 'text-gray-600');
                 lblSecret.classList.replace('text-gray-400', 'text-gray-700');
                 subSecret.classList.replace('text-slate-500', 'text-gray-500');
+                notesSection.classList.replace('bg-slate-800/50', 'bg-gray-100');
+                notesSection.classList.replace('border-slate-700/60', 'border-gray-200');
+                notesTitle.classList.replace('text-blue-400', 'text-blue-600');
+                footerSection.classList.replace('bg-slate-800', 'bg-gray-100');
+                footerSection.classList.replace('border-slate-700', 'border-gray-200');
+                devTitle.classList.replace('text-slate-300', 'text-gray-700');
+                feedbackTxt.classList.replace('text-slate-400', 'text-gray-600');
                 
                 statBoxes.forEach(box => {
-                    box.classList.replace('bg-slate-900', 'bg-gray-100');
+                    box.classList.replace('bg-slate-900', 'bg-gray-50');
                     box.classList.replace('border-slate-700', 'border-gray-200');
                 });
                 utilBoxes.forEach(box => {
-                    box.classList.replace('bg-slate-900/60', 'bg-gray-100');
+                    box.classList.replace('bg-slate-900/60', 'bg-gray-50');
                     box.classList.replace('border-slate-700/80', 'border-gray-200');
                 });
                 
                 themeBtn.innerHTML = "☀️";
             } else {
-                // Apply Dark Mode Classes
+                // Dark Mode Configuration
                 body.classList.replace('bg-slate-50', 'bg-slate-900');
                 body.classList.replace('text-slate-800', 'text-slate-100');
                 mainCard.classList.replace('bg-white', 'bg-slate-800');
@@ -295,13 +361,20 @@
                 lblLength.classList.replace('text-gray-600', 'text-slate-400');
                 lblSecret.classList.replace('text-gray-700', 'text-gray-400');
                 subSecret.classList.replace('text-gray-500', 'text-slate-500');
+                notesSection.classList.replace('bg-gray-100', 'bg-slate-800/50');
+                notesSection.classList.replace('border-gray-200', 'border-slate-700/60');
+                notesTitle.classList.replace('text-blue-600', 'text-blue-400');
+                footerSection.classList.replace('bg-gray-100', 'bg-slate-800');
+                footerSection.classList.replace('border-gray-200', 'border-slate-700');
+                devTitle.classList.replace('text-gray-700', 'text-slate-300');
+                feedbackTxt.classList.replace('text-gray-600', 'text-slate-400');
 
                 statBoxes.forEach(box => {
-                    box.classList.replace('bg-gray-100', 'bg-slate-900');
+                    box.classList.replace('bg-gray-50', 'bg-slate-900');
                     box.classList.replace('border-gray-200', 'border-slate-700');
                 });
                 utilBoxes.forEach(box => {
-                    box.classList.replace('bg-gray-100', 'bg-slate-900/60');
+                    box.classList.replace('bg-gray-50', 'bg-slate-900/60');
                     box.classList.replace('border-gray-200', 'border-slate-700/80');
                 });
 
