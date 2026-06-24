@@ -5,16 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartText Tools - Free Online Text Formatter & Counter</title>
     
-    <!-- SEO Meta Tags for Google Ranking -->
     <meta name="description" content="Free online text utility tool to count words, remove extra spaces, convert case, and generate clean slugs instantly.">
     <meta name="keywords" content="word counter, remove extra spaces online, case converter, text formatter, free text tools">
     <meta name="robots" content="index, follow">
     
-    <!-- Tailwind CSS for Modern UI -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         /* Custom styles for animations and smooth transitions */
-        .transition-theme { transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease; }
+        .transition-theme { transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease; }
         
         /* Heading Shimmer Effect */
         @keyframes shimmer {
@@ -33,107 +31,98 @@
 <body id="bodyTheme" class="p-4 md:p-8 bg-slate-900 text-slate-100 min-h-screen transition-theme">
 
     <div class="max-w-4xl mx-auto">
-        <!-- Header & Theme Toggle (FIXED OVERLAP BUG) -->
         <header class="text-center mb-8 mt-4">
-            <!-- Top bar with button moved up neatly -->
-            <div class="flex justify-end mb-2">
-                <button onclick="toggleTheme()" id="themeBtn" class="p-2.5 bg-slate-800 dark:bg-slate-700 border border-slate-700 dark:border-slate-600 rounded-xl hover:bg-slate-700 transition active:scale-90 cursor-pointer shadow-md text-lg" title="Toggle Theme">
+            <div class="flex justify-between items-center mb-4">
+                <button onclick="openProModal()" class="flex items-center gap-1.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold py-1.5 px-4 rounded-xl shadow-lg hover:-translate-y-0.5 active:scale-95 transition-theme text-xs md:text-sm cursor-pointer">
+                    ⭐ Pro
+                </button>
+                
+                <button onclick="toggleTheme()" id="themeBtn" class="p-2.5 bg-slate-800 border border-slate-700 rounded-xl hover:bg-slate-700 hover:-translate-y-0.5 active:scale-90 transition-theme cursor-pointer shadow-md text-lg" title="Toggle Theme">
                     🌙
                 </button>
             </div>
             
-            <!-- Animated Heading Logo -->
             <h1 class="text-3xl md:text-4xl font-extrabold mb-2 flex justify-center items-center gap-1">
                 <span>⚡</span><span class="animate-shimmer">SmartText Utility Pro</span>
             </h1>
             <p id="subHeader" class="text-gray-400 text-sm md:text-base transition-theme">Format, clean, and analyze your text instantly. No logs, 100% secure.</p>
         </header>
 
-        <!-- Main Workspace Card -->
-        <div id="mainCard" class="bg-slate-800 rounded-2xl p-6 shadow-xl border border-slate-700 mb-6 transition-theme">
-            <!-- Textarea -->
-            <textarea id="mainInput" class="w-full h-64 bg-slate-900 text-slate-100 p-4 rounded-xl border border-slate-600 focus:outline-none focus:border-blue-500 resize-y placeholder-gray-500 text-lg mb-4 transition-theme" placeholder="Type or paste your text here..."></textarea>
+        <div id="mainCard" class="bg-slate-800 rounded-3xl p-5 md:p-6 shadow-xl border border-slate-700/70 mb-6 transition-theme">
+            <textarea id="mainInput" class="w-full h-64 bg-slate-900 text-slate-100 p-4 rounded-xl border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 resize-y placeholder-gray-500 text-lg mb-4 transition-theme" placeholder="Type or paste your text here..."></textarea>
 
-            <!-- Live Stats Counter -->
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 text-center">
-                <div id="statBox1" class="bg-slate-900 p-3 rounded-lg border border-slate-700 transition-theme">
+                <div id="statBox1" class="bg-slate-900 p-3 rounded-xl border border-slate-700 transition-theme">
                     <span class="block text-xs uppercase text-gray-400 font-semibold">Characters (No Spaces)</span>
                     <span id="charCount" class="text-xl font-bold text-blue-400">0</span>
                 </div>
-                <div id="statBox2" class="bg-slate-900 p-3 rounded-lg border border-slate-700 transition-theme">
+                <div id="statBox2" class="bg-slate-900 p-3 rounded-xl border border-slate-700 transition-theme">
                     <span class="block text-xs uppercase text-gray-400 font-semibold">Words</span>
                     <span id="wordCount" class="text-xl font-bold text-emerald-400">0</span>
                 </div>
-                <div id="statBox3" class="bg-slate-900 p-3 rounded-lg border border-slate-700 transition-theme">
+                <div id="statBox3" class="bg-slate-900 p-3 rounded-xl border border-slate-700 transition-theme">
                     <span class="block text-xs uppercase text-gray-400 font-semibold">Lines</span>
                     <span id="lineCount" class="text-xl font-bold text-amber-400">0</span>
                 </div>
-                <div id="statBox4" class="bg-slate-900 p-3 rounded-lg border border-slate-700 transition-theme">
+                <div id="statBox4" class="bg-slate-900 p-3 rounded-xl border border-slate-700 transition-theme">
                     <span class="block text-xs uppercase text-gray-400 font-semibold">Paragraphs</span>
                     <span id="paraCount" class="text-xl font-bold text-purple-400">0</span>
                 </div>
             </div>
 
-            <!-- Action Buttons Grid -->
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-6">
-                <button onclick="transformText('upper')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-lg transition transform active:scale-95 text-sm cursor-pointer shadow-md">UPPERCASE</button>
-                <button onclick="transformText('lower')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-lg transition transform active:scale-95 text-sm cursor-pointer shadow-md">lowercase</button>
-                <button onclick="transformText('title')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-lg transition transform active:scale-95 text-sm cursor-pointer shadow-md">Title Case</button>
-                <button onclick="transformText('clean')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-3 rounded-lg transition transform active:scale-95 text-sm cursor-pointer shadow-md">Remove Extra Spaces</button>
-                <button onclick="transformText('slug')" class="bg-amber-600 hover:bg-amber-700 text-white font-medium py-2 px-3 rounded-lg transition transform active:scale-95 text-sm cursor-pointer shadow-md">Convert to Slug</button>
-                <button onclick="clearText()" class="bg-rose-600 hover:bg-rose-700 text-white font-medium py-2 px-3 rounded-lg transition transform active:scale-95 text-sm cursor-pointer shadow-md">Clear Content</button>
-                <button onclick="copyToClipboard()" id="copyBtn" class="col-span-2 sm:col-span-1 md:col-span-2 bg-slate-700 hover:bg-slate-600 text-white font-bold py-2 px-3 rounded-lg transition transform active:scale-95 text-sm flex items-center justify-center gap-1 cursor-pointer shadow-md">
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 mb-6">
+                <button onclick="transformText('upper')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-xl transition transform hover:-translate-y-0.5 active:scale-95 text-xs md:text-sm cursor-pointer shadow-md">UPPERCASE</button>
+                <button onclick="transformText('lower')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-xl transition transform hover:-translate-y-0.5 active:scale-95 text-xs md:text-sm cursor-pointer shadow-md">lowercase</button>
+                <button onclick="transformText('title')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-xl transition transform hover:-translate-y-0.5 active:scale-95 text-xs md:text-sm cursor-pointer shadow-md">Title Case</button>
+                <button onclick="transformText('clean')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-3 rounded-xl transition transform hover:-translate-y-0.5 active:scale-95 text-xs md:text-sm cursor-pointer shadow-md">Remove Extra Spaces</button>
+                <button onclick="transformText('slug')" class="bg-amber-600 hover:bg-amber-700 text-white font-medium py-2 px-3 rounded-xl transition transform hover:-translate-y-0.5 active:scale-95 text-xs md:text-sm cursor-pointer shadow-md">Convert to Slug</button>
+                <button onclick="clearText()" class="bg-rose-600 hover:bg-rose-700 text-white font-medium py-2 px-3 rounded-xl transition transform hover:-translate-y-0.5 active:scale-95 text-xs md:text-sm cursor-pointer shadow-md">Clear Content</button>
+                <button onclick="copyToClipboard()" id="copyBtn" class="col-span-2 sm:col-span-1 md:col-span-2 bg-slate-700 hover:bg-slate-600 text-white font-bold py-2 px-3 rounded-xl transition transform hover:-translate-y-0.5 active:scale-95 text-xs md:text-sm flex items-center justify-center gap-1 cursor-pointer shadow-md">
                     📋 Copy Result
                 </button>
             </div>
 
             <hr class="border-slate-700 my-6">
 
-            <!-- Advanced Utilities Panel -->
             <div class="space-y-4">
                 <h3 id="panelTitle" class="text-md font-bold text-slate-400 uppercase tracking-wider mb-2 transition-theme">🛠️ Advanced Smart Tools</h3>
                 
-                <!-- Row 1: Random Text & Password Generators -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Random Text Generator -->
                     <div id="utilBox1" class="bg-slate-900/60 p-4 rounded-xl border border-slate-700/80 flex items-center justify-between gap-2 transition-theme">
                         <div class="flex items-center gap-2">
                             <label id="lblParas" class="text-xs text-slate-400 font-semibold uppercase transition-theme">Paras:</label>
-                            <input type="number" id="loremCount" min="1" max="5" value="1" class="w-12 p-1 bg-slate-800 border border-slate-600 rounded text-center text-sm text-white focus:outline-none focus:border-blue-500 transition-theme">
+                            <input type="number" id="loremCount" min="1" max="20" value="1" class="w-14 p-1 bg-slate-800 border border-slate-600 rounded-lg text-center text-sm text-white focus:outline-none focus:border-blue-500 transition-theme">
                         </div>
-                        <button onclick="generateRandomText()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-1.5 px-3 rounded-lg transition transform active:scale-95 text-xs cursor-pointer shadow-sm">
+                        <button onclick="generateRandomText()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-1.5 px-3 rounded-lg transition transform hover:-translate-y-0.5 active:scale-95 text-xs cursor-pointer shadow-sm">
                             ✨ Random Text
                         </button>
                     </div>
 
-                    <!-- Password Generator -->
                     <div id="utilBox2" class="bg-slate-900/60 p-4 rounded-xl border border-slate-700/80 flex items-center justify-between gap-2 transition-theme">
                         <div class="flex items-center gap-2">
                             <label id="lblLength" class="text-xs text-slate-400 font-semibold uppercase transition-theme">Length:</label>
-                            <input type="number" id="passLength" min="6" max="30" value="12" class="w-14 p-1 bg-slate-800 border border-slate-600 rounded text-center text-sm text-white focus:outline-none focus:border-blue-500 transition-theme">
+                            <input type="number" id="passLength" min="6" max="64" value="12" class="w-14 p-1 bg-slate-800 border border-slate-600 rounded-lg text-center text-sm text-white focus:outline-none focus:border-blue-500 transition-theme">
                         </div>
-                        <button onclick="generatePassword()" class="bg-teal-600 hover:bg-teal-700 text-white font-medium py-1.5 px-3 rounded-lg transition transform active:scale-95 text-xs cursor-pointer shadow-sm">
+                        <button onclick="generatePassword()" class="bg-teal-600 hover:bg-teal-700 text-white font-medium py-1.5 px-3 rounded-lg transition transform hover:-translate-y-0.5 active:scale-95 text-xs cursor-pointer shadow-sm">
                             🔑 Generate Pass
                         </button>
                     </div>
                 </div>
 
-                <!-- Row 2: Secret Message Encryption Panel -->
                 <div id="utilBox3" class="bg-slate-900/60 p-4 rounded-xl border border-slate-700/80 flex flex-col sm:flex-row items-center justify-between gap-3 transition-theme">
                     <div class="text-left">
                         <span id="lblSecret" class="block text-xs uppercase text-gray-400 font-semibold transition-theme">Secret Messaging</span>
                         <p id="subSecret" class="text-xs text-slate-500 transition-theme">Encrypt text into secure code or decrypt it back.</p>
                     </div>
                     <div class="flex gap-2 w-full sm:w-auto">
-                        <button onclick="cipherText('encrypt')" class="w-1/2 sm:w-auto bg-violet-600 hover:bg-violet-700 text-white font-medium py-1.5 px-4 rounded-lg transition transform active:scale-95 text-xs cursor-pointer shadow-sm">🔒 Encrypt</button>
-                        <button onclick="cipherText('decrypt')" class="w-1/2 sm:w-auto bg-fuchsia-600 hover:bg-fuchsia-700 text-white font-medium py-1.5 px-4 rounded-lg transition transform active:scale-95 text-xs cursor-pointer shadow-sm">🔓 Decrypt</button>
+                        <button onclick="cipherText('encrypt')" class="w-1/2 sm:w-auto bg-violet-600 hover:bg-violet-700 text-white font-medium py-1.5 px-4 rounded-lg transition transform hover:-translate-y-0.5 active:scale-95 text-xs cursor-pointer shadow-sm">🔒 Encrypt</button>
+                        <button onclick="cipherText('decrypt')" class="w-1/2 sm:w-auto bg-fuchsia-600 hover:bg-fuchsia-700 text-white font-medium py-1.5 px-4 rounded-lg transition transform hover:-translate-y-0.5 active:scale-95 text-xs cursor-pointer shadow-sm">🔓 Decrypt</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Usage Notes Section -->
-        <div id="notesSection" class="bg-slate-800/50 border border-slate-700/60 rounded-2xl p-5 mb-6 transition-theme">
+        <div id="notesSection" class="bg-slate-800/50 border border-slate-700/60 rounded-3xl p-5 mb-6 mt-6 transition-theme">
             <h3 id="notesTitle" class="text-sm font-bold text-blue-400 mb-3 flex items-center gap-1.5 uppercase tracking-wider">
                 💡 Usage Notes & Tips
             </h3>
@@ -149,28 +138,49 @@
             </ul>
         </div>
 
-        <!-- Developer Professional Footer (Notes Added Here) -->
-        <footer id="footerSection" class="bg-slate-800 border border-slate-700 rounded-2xl p-5 text-center transition-theme mb-8">
+        <footer id="footerSection" class="bg-slate-800 border border-slate-700 rounded-3xl p-5 text-center transition-theme mb-8">
             <p id="devTitle" class="text-sm font-bold text-slate-300 tracking-wide mb-3">
-                👨‍💻 Created By <span class="text-blue-400 font-extrabold">Salman S Kennedy</span>
+                👨‍💻 Created By <span class="text-blue-400 font-extrabold">Salman S Kennedy</span> 
+                <span class="text-[10px] ml-1.5 px-1.5 py-0.5 bg-slate-900 text-gray-400 rounded-md font-mono border border-slate-700/60">v1.2.0</span>
             </p>
             <div class="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-6 text-xs md:text-sm">
                 <span id="feedbackTxt" class="text-slate-400 font-medium">For Feedback:</span>
                 
-                <!-- Phone Link -->
-                <a href="tel:+923066551022" class="flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 transition font-semibold transform active:scale-95 bg-slate-900/60 px-3 py-1.5 rounded-lg border border-slate-700/50">
+                <a href="tel:+923066551022" class="flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 transition font-semibold transform hover:-translate-y-0.5 active:scale-95 bg-slate-900/60 px-3 py-1.5 rounded-xl border border-slate-700/50">
                     📞 +92 306 6551022
                 </a>
                 
-                <!-- Gmail Link -->
-                <a href="mailto:4salmanskennedy@gmail.com" class="flex items-center gap-1.5 text-amber-400 hover:text-amber-300 transition font-semibold transform active:scale-95 bg-slate-900/60 px-3 py-1.5 rounded-lg border border-slate-700/50">
+                <a href="mailto:4salmanskennedy@gmail.com" class="flex items-center gap-1.5 text-amber-400 hover:text-amber-300 transition font-semibold transform hover:-translate-y-0.5 active:scale-95 bg-slate-900/60 px-3 py-1.5 rounded-xl border border-slate-700/50">
                     ✉ 4salmanskennedy@gmail.com
                 </a>
             </div>
         </footer>
     </div>
 
-    <!-- Core Logic -->
+    <div id="proModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <div id="modalContent" class="bg-slate-800 border border-slate-700 max-w-md w-full mx-4 rounded-3xl p-6 shadow-2xl relative transform scale-95 transition-transform duration-300 text-center">
+            <button onclick="closeProModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white font-bold text-lg cursor-pointer">&times;</button>
+            
+            <div class="w-12 h-12 bg-amber-500/10 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4">⭐</div>
+            <h3 id="modalHead" class="text-xl font-extrabold text-white mb-2">SmartText Premium Tools</h3>
+            <p id="modalSub" class="text-xs text-gray-400 mb-6">Unlock powerful advanced mechanics to speed up your daily workflows.</p>
+            
+            <div class="space-y-3 text-left mb-6 text-xs md:text-sm">
+                <div id="mItem1" class="flex items-start gap-2.5 bg-slate-900/50 p-2.5 rounded-xl border border-slate-700/50"><span class="text-amber-400">⚡</span><div><strong class="text-gray-200 block">AI Text Summarizer</strong> Extract key insights from long paragraphs instantly.</div></div>
+                <div id="mItem2" class="flex items-start gap-2.5 bg-slate-900/50 p-2.5 rounded-xl border border-slate-700/50"><span class="text-amber-400">🖨️</span><div><strong class="text-gray-200 block">Image to Text (OCR Converter)</strong> Upload photos or snapshots to extract editable text.</div></div>
+                <div id="mItem3" class="flex items-start gap-2.5 bg-slate-900/50 p-2.5 rounded-xl border border-slate-700/50"><span class="text-amber-400">📁</span><div><strong class="text-gray-200 block">Bulk File Processing</strong> Format multiple text sheets or CSV documents at once.</div></div>
+            </div>
+            
+            <div id="mPrice" class="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 rounded-2xl p-3.5 mb-5">
+                <span class="text-2xl font-black text-amber-400">$1.99</span> <span class="text-xs text-gray-400">/ month</span>
+            </div>
+            
+            <button class="w-full bg-slate-700 text-gray-300 font-bold py-2.5 px-4 rounded-xl cursor-not-allowed text-xs uppercase tracking-wider">
+                ⏳ Coming Soon • Get Notified
+            </button>
+        </div>
+    </div>
+
     <script>
         const textarea = document.getElementById('mainInput');
         
@@ -215,7 +225,6 @@
             textarea.dispatchEvent(new Event('input'));
         }
 
-        // Copy Clipboard Feedback Integration
         function copyToClipboard() {
             if(!textarea.value) return;
             navigator.clipboard.writeText(textarea.value);
@@ -231,9 +240,9 @@
             }, 1500);
         }
 
-        // Random Text Generator Logic
+        // Extended Paragraph Generator (Max Limit 20 Verification)
         document.getElementById('loremCount').addEventListener('change', function() {
-            if(this.value > 5) this.value = 5;
+            if(this.value > 20) this.value = 20;
             if(this.value < 1) this.value = 1;
         });
 
@@ -256,7 +265,12 @@
             textarea.dispatchEvent(new Event('input'));
         }
 
-        // Password Generator Logic
+        // Extended Password Generator (Max Limit 64 Verification)
+        document.getElementById('passLength').addEventListener('change', function() {
+            if(this.value > 64) this.value = 64;
+            if(this.value < 6) this.value = 6;
+        });
+
         function generatePassword() {
             const length = parseInt(document.getElementById('passLength').value) || 12;
             const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=";
@@ -268,7 +282,7 @@
             textarea.dispatchEvent(new Event('input'));
         }
 
-        // Secret Messaging Logic
+        // Secret Messaging Cipher Mechanism
         function cipherText(action) {
             const text = textarea.value.trim();
             if(!text) return;
@@ -285,7 +299,26 @@
             }
         }
 
-        // Theme Switcher Engine
+        // ⭐ Premium Modal Triggers
+        function openProModal() {
+            const modal = document.getElementById('proModal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                document.getElementById('modalContent').classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeProModal() {
+            const modal = document.getElementById('proModal');
+            modal.classList.add('opacity-0');
+            document.getElementById('modalContent').classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Dark / Light Mode Theme Switching Engine
         let isDarkMode = true;
         
         function toggleTheme() {
@@ -305,16 +338,20 @@
             const footerSection = document.getElementById('footerSection');
             const devTitle = document.getElementById('devTitle');
             const feedbackTxt = document.getElementById('feedbackTxt');
+            const modalContent = document.getElementById('modalContent');
+            const modalHead = document.getElementById('modalHead');
+            const modalSub = document.getElementById('modalSub');
             
             const statBoxes = [1, 2, 3, 4].map(id => document.getElementById(`statBox${id}`));
             const utilBoxes = [1, 2, 3].map(id => document.getElementById(`utilBox${id}`));
+            const modalItems = [1, 2, 3].map(id => document.getElementById(`mItem${id}`));
 
             if (!isDarkMode) {
-                // Light Mode Configuration
+                // Light Mode
                 body.classList.replace('bg-slate-900', 'bg-slate-50');
                 body.classList.replace('text-slate-100', 'text-slate-800');
                 mainCard.classList.replace('bg-slate-800', 'bg-white');
-                mainCard.classList.replace('border-slate-700', 'border-gray-200');
+                mainCard.classList.replace('border-slate-700/70', 'border-gray-200');
                 mainInput.classList.replace('bg-slate-900', 'bg-gray-50');
                 mainInput.classList.replace('text-slate-100', 'text-gray-900');
                 mainInput.classList.replace('border-slate-600', 'border-gray-300');
@@ -333,6 +370,11 @@
                 footerSection.classList.replace('border-slate-700', 'border-gray-200');
                 devTitle.classList.replace('text-slate-300', 'text-gray-700');
                 feedbackTxt.classList.replace('text-slate-400', 'text-gray-600');
+                modalContent.classList.replace('bg-slate-800', 'bg-white');
+                modalContent.classList.replace('border-slate-700', 'border-gray-200');
+                modalHead.classList.replace('text-white', 'text-gray-800');
+                modalSub.classList.replace('text-gray-400', 'text-gray-500');
+                document.getElementById('mPrice').classList.replace('bg-gradient-to-r', 'bg-gray-100');
                 
                 statBoxes.forEach(box => {
                     box.classList.replace('bg-slate-900', 'bg-gray-50');
@@ -342,14 +384,18 @@
                     box.classList.replace('bg-slate-900/60', 'bg-gray-50');
                     box.classList.replace('border-slate-700/80', 'border-gray-200');
                 });
+                modalItems.forEach(item => {
+                    item.classList.replace('bg-slate-900/50', 'bg-gray-50');
+                    item.classList.replace('border-slate-700/50', 'border-gray-200');
+                });
                 
                 themeBtn.innerHTML = "☀️";
             } else {
-                // Dark Mode Configuration
+                // Dark Mode
                 body.classList.replace('bg-slate-50', 'bg-slate-900');
                 body.classList.replace('text-slate-800', 'text-slate-100');
                 mainCard.classList.replace('bg-white', 'bg-slate-800');
-                mainCard.classList.replace('border-gray-200', 'border-slate-700');
+                mainCard.classList.replace('border-gray-200', 'border-slate-700/70');
                 mainInput.classList.replace('bg-gray-50', 'bg-slate-900');
                 mainInput.classList.replace('text-gray-900', 'text-slate-100');
                 mainInput.classList.replace('border-gray-300', 'border-slate-600');
@@ -368,6 +414,11 @@
                 footerSection.classList.replace('border-gray-200', 'border-slate-700');
                 devTitle.classList.replace('text-gray-700', 'text-slate-300');
                 feedbackTxt.classList.replace('text-gray-600', 'text-slate-400');
+                modalContent.classList.replace('bg-white', 'bg-slate-800');
+                modalContent.classList.replace('border-gray-200', 'border-slate-700');
+                modalHead.classList.replace('text-gray-800', 'text-white');
+                modalSub.classList.replace('text-gray-500', 'text-gray-400');
+                document.getElementById('mPrice').classList.replace('bg-gray-100', 'bg-gradient-to-r');
 
                 statBoxes.forEach(box => {
                     box.classList.replace('bg-gray-50', 'bg-slate-900');
@@ -376,6 +427,10 @@
                 utilBoxes.forEach(box => {
                     box.classList.replace('bg-gray-50', 'bg-slate-900/60');
                     box.classList.replace('border-gray-200', 'border-slate-700/80');
+                });
+                modalItems.forEach(item => {
+                    item.classList.replace('bg-gray-50', 'bg-slate-900/50');
+                    item.classList.replace('border-gray-200', 'border-slate-700/50');
                 });
 
                 themeBtn.innerHTML = "🌙";
