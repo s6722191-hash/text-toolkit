@@ -3,218 +3,413 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Text Utility - Free Online Text Formatter & Counter</title>
-    <!-- Advanced SEO Meta Tags for Google Ranking -->
-    <meta name="description" content="Smart Text Utility - Ultimate free online text tool. Count words, lines, characters with & without spaces instantly, remove extra spaces, convert text to slug, generate secure passwords and encrypt messages locally.">
-    <meta name="keywords" content="word counter online, text formatter, remove extra spaces, title case converter, strong password generator, secret messaging tool, smart text utility, free text counters">
-    <meta name="robots" content="index, follow">
-    <meta name="author" content="Wayne Corp">
+    <title>Smart Text Utility - Word Counter & Image to Text OCR</title>
 
-    <!-- Open Graph (OG) Meta Tags for Social Media -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="⚡ Smart Text Utility - Format, Clean & Analyze Text Instantly">
-    <meta property="og:description" content="Free secure text utility tool to count words, format text cases, remove extra spaces, and encrypt secret messages. 100% private.">
+<meta name="description" content="Free online text tools to count words and characters, format and clean text, generate passwords, and extract editable text from images with private browser-based OCR.">
+
+<meta name="keywords" content="image to text, OCR online, word counter online, text formatter, remove extra spaces, title case converter, strong password generator, smart text utility">
+
+<meta name="author" content="SOLO MAN">
+
+<meta property="og:description" content="Count, format and clean text or extract editable text from images with free browser-based OCR.">
     <meta property="og:url" content="https://text-toolkit-dk19.vercel.app">
     <meta property="og:site_name" content="Smart Text Utility">
     
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <style>
-        /* Custom styles for animations and smooth transitions */
-        .transition-theme { transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease; }
-        
-        /* Heading Shimmer Effect */
-        @keyframes shimmer {
-            0% { background-position: -200% center; }
-            100% { background-position: 200% center; }
-        }
-        .animate-shimmer {
-            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899, #3b82f6);
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shimmer 4s linear infinite;
-        }
-    </style>
+<style>
+/* Smart Text Utility — responsive workspace */
+:root {
+    color-scheme: dark;
+    --page: #0b1118; --surface: #121c27; --soft: #172330;
+    --editor: #101923; --line: #293748; --ink: #ecf2f7;
+    --muted: #a3b2c2; --accent: #7de4c4; --accent-ink: #082b22;
+    --tint: #173a34; --danger: #ffa3a3;
+    --shadow: 0 18px 55px rgb(0 0 0 / 12%);
+}
+html[data-theme="light"] {
+    color-scheme: light;
+    --page: #f4f6f8; --surface: #ffffff; --soft: #edf2f5;
+    --editor: #fcfdfe; --line: #d9e2e9; --ink: #172a3a;
+    --muted: #536779; --accent: #126e59; --accent-ink: #ffffff;
+    --tint: #e7f4ee; --danger: #b32f37;
+    --shadow: 0 18px 55px rgb(25 48 66 / 5%);
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--page); color: var(--ink); font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 15px; line-height: 1.6; }
+button, input, textarea, select { font: inherit; }
+button, a, input, textarea, select { -webkit-tap-highlight-color: transparent; }
+button { cursor: pointer; }
+button:disabled { cursor: not-allowed; opacity: .5; }
+a { color: inherit; text-decoration: none; }
+button, a { touch-action: manipulation; }
+button, input, textarea, select { border-radius: 10px; }
+button, a, input, textarea, select { transition: border-color .15s, background-color .15s, color .15s; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+::selection { background: var(--accent); color: var(--accent-ink); }
+h1, h2, h3, p { margin: 0; }
+svg { display: block; flex-shrink: 0; }
+.icon { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.shell { width: min(1180px, calc(100% - 64px)); margin-inline: auto; }
+.topbar { border-bottom: 1px solid var(--line); }
+.nav { min-height: 88px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.brand { display: inline-flex; align-items: center; gap: 12px; }
+.brand-mark { width: 40px; height: 40px; display: grid; place-items: center; background: var(--accent); color: var(--accent-ink); border-radius: 12px; font-size: 23px; font-weight: 750; letter-spacing: -2px; padding-right: 2px; }
+.brand-name { display: block; font-weight: 720; font-size: 17px; letter-spacing: -.5px; line-height: 1.4; }
+.brand-note { display: block; color: var(--muted); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
+.nav-actions, .row { display: flex; align-items: center; gap: 10px; }
+.button { display: inline-flex; justify-content: center; align-items: center; gap: 8px; min-height: 42px; padding: 9px 15px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-size: 13px; line-height: 1.4; font-weight: 620; }
+.button:hover:not(:disabled) { background: var(--soft); border-color: var(--muted); }
+.button.primary { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+.button.primary:hover:not(:disabled) { filter: brightness(.94); background: var(--accent); border-color: transparent; }
+.button.subtle { background: transparent; }
+.button.danger { color: var(--danger); }
+.icon-button { width: 42px; padding: 0; }
+.theme-moon, html[data-theme="light"] .theme-sun { display: none; }
+html[data-theme="light"] .theme-moon { display: block; }
+.intro { padding: 36px 0 28px; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+.eyebrow { display: block; font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+h1 { font-size: clamp(29px, 3.3vw, 42px); line-height: 1.15; font-weight: 680; letter-spacing: -1.8px; margin-bottom: 10px; }
+.intro p { color: var(--muted); font-size: 14px; }
+.local-label { display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; color: var(--muted); font-size: 11px; margin-bottom: 5px; }
+.dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; flex-shrink: 0; }
+.workspace { display: grid; grid-template-columns: minmax(0, 1fr) 304px; gap: 24px; align-items: start; }
+.editor-column { min-width: 0; }
+.editor-card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; box-shadow: var(--shadow); }
+.editor-heading { padding: 18px 22px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--line); }
+.editor-heading h2 { font-size: 15px; font-weight: 650; }
+.editor-heading span { font-size: 11px; color: var(--muted); }
+.toolbar { padding: 12px 18px; display: flex; flex-wrap: wrap; gap: 6px; border-bottom: 1px solid var(--line); }
+.toolbar .button { min-height: 38px; padding: 7px 11px; font-size: 12px; border-color: transparent; background: var(--soft); font-weight: 550; }
+.toolbar .button:hover { border-color: var(--muted); }
+#mainInput { display: block; width: 100%; height: 318px; min-height: 220px; max-height: 1000px; resize: vertical; border: 0; border-radius: 0; background: var(--editor); color: var(--ink); padding: 24px; font-size: 16px; line-height: 1.85; }
+#mainInput:focus { outline: none; box-shadow: inset 0 0 0 2px var(--accent); }
+textarea::placeholder { color: var(--muted); opacity: .9; }
+.editor-actions { padding: 14px 20px; border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.editor-hint { color: var(--muted); font-size: 11px; }
+.stats { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); padding: 22px 0; }
+.stat { display: flex; flex-direction: column; padding: 0 12px; border-right: 1px solid var(--line); min-width: 0; }
+.stat:first-child { padding-left: 2px; }
+.stat:last-child { border: 0; }
+.stat strong { font-size: 28px; font-weight: 600; letter-spacing: -1px; line-height: 1.2; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.stat:first-child strong { color: var(--accent); }
+.stat span { margin-top: 7px; color: var(--muted); font-size: 10px; line-height: 1.45; }
+.notes { border-top: 1px solid var(--line); padding-top: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.note { display: flex; gap: 10px; }
+.note .icon { color: var(--muted); margin-top: 3px; width: 17px; height: 17px; }
+.note h3 { font-size: 12px; font-weight: 600; margin-bottom: 3px; }
+.note p { font-size: 11px; color: var(--muted); line-height: 1.65; }
+.tools { display: grid; gap: 12px; }
+.tools-heading { display: flex; align-items: center; justify-content: space-between; padding: 0 2px 1px; }
+.tools-heading h2 { font-size: 12px; font-weight: 650; }
+.tools-heading span { color: var(--muted); font-size: 10px; }
+.tool { padding: 17px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; min-width: 0; }
+.tool.featured { background: var(--tint); }
+.tool-title { display: flex; gap: 10px; align-items: center; margin-bottom: 7px; }
+.tool-title .icon { color: var(--accent); width: 18px; height: 18px; }
+.tool h3 { font-size: 13px; font-weight: 650; }
+.tool p { color: var(--muted); font-size: 11px; line-height: 1.7; }
+.tool .row { justify-content: space-between; margin-top: 13px; }
+.tool .button { min-height: 38px; padding: 8px 12px; font-size: 11px; }
+.tool label { color: var(--muted); font-size: 11px; }
+.tool input { width: 50px; height: 36px; border: 1px solid var(--line); background: var(--editor); color: var(--ink); padding: 4px; text-align: center; font-size: 14px; }
+.tool .number-field { display: flex; gap: 7px; align-items: center; }
+.wide { width: 100%; }
+.tool.featured > .button { margin-top: 13px; }
+.footer { margin-top: 42px; padding: 24px 0 30px; border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.company { display: flex; align-items: center; gap: 10px; }
+.company svg { width: 36px; height: 36px; color: var(--muted); }
+.company small { display: block; color: var(--muted); font-size: 9px; letter-spacing: 1.4px; text-transform: uppercase; }
+.company strong { font-size: 13px; letter-spacing: 2px; font-weight: 650; }
+.feedback { text-align: right; }
+.feedback p { color: var(--muted); font-size: 11px; margin-bottom: 3px; }
+.feedback a { font-size: 12px; color: var(--ink); overflow-wrap: anywhere; }
+.feedback a:hover { color: var(--accent); text-decoration: underline; }
+.version { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; padding: 3px 8px; font: 11px ui-monospace, SFMono-Regular, Consolas, monospace; color: var(--muted); white-space: nowrap; }
+.footer-end { display: flex; gap: 24px; align-items: center; }
+.modal { position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgb(4 10 17 / 75%); overflow-y: auto; transition: opacity .3s; }
+.modal-card { position: relative; width: 100%; max-width: 530px; max-height: calc(100dvh - 40px); overflow-y: auto; padding: 26px; background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); transition: transform .3s; }
+.modal-card h2 { font-size: 22px; font-weight: 650; letter-spacing: -.5px; padding-right: 25px; }
+.modal-card p { color: var(--muted); font-size: 12px; }
+.modal-close { position: absolute; right: 18px; top: 18px; width: 34px; min-height: 34px; font-size: 22px; }
+.modal-intro { margin-bottom: 22px; }
+.modal-intro p { margin-top: 7px; }
+.modal label.field-label { display: block; color: var(--muted); font-size: 12px; margin-bottom: 7px; }
+.field-group { margin-top: 16px; }
+.modal select, .modal textarea { width: 100%; padding: 10px; background: var(--editor); color: var(--ink); border: 1px solid var(--line); font-size: 16px; }
+.modal textarea { min-height: 160px; resize: vertical; line-height: 1.7; }
+.drop-zone { display: block; padding: 22px 12px; border: 1px dashed var(--muted); background: var(--editor); border-radius: 12px; text-align: center; cursor: pointer; }
+.drop-zone .icon { margin: 0 auto 12px; color: var(--accent); width: 25px; height: 25px; }
+.drop-zone strong, .drop-zone small { display: block; }
+.drop-zone strong { font-size: 13px; }
+.drop-zone small { color: var(--muted); font-size: 10px; margin-top: 5px; }
+.drop-zone:focus-within { outline: 3px solid var(--accent); outline-offset: 3px; }
+.drop-zone:hover, #ocrDropZone.ocr-drag-active { background: var(--tint); border-color: var(--accent); }
+.preview-box, .result-box { margin-top: 16px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--editor); }
+#ocrPreview { width: 100%; max-height: 180px; object-fit: contain; border-radius: 8px; }
+.preview-meta { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 8px; }
+#ocrFileName { font-size: 11px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.preview-meta .button { flex-shrink: 0; font-size: 11px; }
+#ocrExtractBtn { margin-top: 16px; }
+#ocrFileError { color: var(--danger); margin-top: 12px; }
+#ocrProgressWrap { margin-top: 18px; }
+.progress-labels { display: flex; justify-content: space-between; gap: 12px; color: var(--muted); font-size: 11px; margin-bottom: 8px; }
+.progress-track { height: 5px; border-radius: 10px; background: var(--line); overflow: hidden; }
+#ocrProgressBar { height: 100%; background: var(--accent); transition: width .2s; }
+.result-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.modal .privacy-note { font-size: 10px; margin-top: 17px; text-align: center; }
+.roadmap-list { display: grid; gap: 10px; margin: 20px 0; }
+.roadmap-item { padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--editor); }
+.roadmap-item strong { display: block; font-size: 13px; margin-bottom: 4px; }
+.roadmap-price { text-align: center; margin-bottom: 15px; color: var(--muted); font-size: 12px; }
+.roadmap-price strong { font-size: 24px; color: var(--ink); }
+.skip-link { position: fixed; top: 10px; left: 10px; z-index: 100; transform: translateY(-150%); background: var(--accent); color: var(--accent-ink); padding: 10px 16px; border-radius: 8px; }
+.skip-link:focus { transform: none; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.hidden { display: none !important; }
+.opacity-0 { opacity: 0; }
+.scale-95 { transform: scale(.97); }
+@media (max-width: 900px) {
+    .shell { width: min(720px, calc(100% - 40px)); }
+    .workspace { grid-template-columns: 1fr; gap: 28px; }
+    .tools { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .tools-heading { grid-column: 1 / -1; }
+    .local-label { display: none; }
+    .footer { margin-top: 32px; }
+}
+@media (max-width: 520px) {
+    .shell { width: calc(100% - 32px); }
+    .nav { min-height: 74px; gap: 8px; }
+    .brand { gap: 9px; }
+    .brand-mark { width: 35px; height: 35px; border-radius: 10px; font-size: 21px; }
+    .brand-name { font-size: 14px; }
+    .brand-note { font-size: 8px; letter-spacing: 1.5px; }
+    .nav-actions { gap: 6px; }
+    .nav-actions .button { font-size: 11px; padding: 8px 10px; min-height: 38px; }
+    .nav-actions .icon-button { width: 38px; padding: 0; }
+    .intro { padding: 25px 0 23px; }
+    .intro p { font-size: 12px; max-width: 32ch; }
+    h1 { letter-spacing: -1.1px; }
+    .eyebrow { font-size: 9px; margin-bottom: 8px; }
+    .editor-heading { padding: 14px 15px; }
+    .toolbar { padding: 10px; gap: 5px; }
+    .toolbar .button { padding: 7px 9px; font-size: 11px; }
+    #mainInput { height: 250px; padding: 17px; }
+    .editor-actions { padding: 12px; }
+    .editor-hint { display: none; }
+    .editor-actions .row { justify-content: space-between; width: 100%; }
+    .stats { grid-template-columns: repeat(6, minmax(0, 1fr)); row-gap: 22px; padding: 24px 0; }
+    .stat { grid-column: span 2; padding: 0 10px; }
+    .stat:nth-child(3) { border: 0; }
+    .stat:nth-child(4), .stat:nth-child(5) { grid-column: span 3; padding: 0 10px; }
+    .stat:nth-child(4) { padding-left: 2px; }
+    .stat strong { font-size: 28px; }
+    .stat span { font-size: 10px; }
+    .notes { gap: 16px; }
+    .note { display: block; }
+    .note .icon { margin: 0 0 8px; }
+    .tools { grid-template-columns: 1fr; }
+    .tool { padding: 18px; }
+    .tool h3 { font-size: 14px; }
+    .tool p { font-size: 12px; }
+    .tool .button { min-height: 42px; font-size: 12px; }
+    .footer { align-items: flex-start; flex-wrap: wrap; gap: 18px; }
+    .footer-end { display: contents; }
+    .feedback { order: 3; text-align: left; flex-basis: 100%; }
+    .version { align-self: center; }
+    .modal { padding: 12px; }
+    .modal-card { padding: 22px 18px; max-height: calc(100dvh - 24px); border-radius: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
+}
+</style>
+
 </head>
-<body id="bodyTheme" class="p-4 md:p-8 bg-slate-900 text-slate-100 min-h-screen transition-theme">
+<body id="bodyTheme">
+    <a class="skip-link" href="#mainInput">Skip to text editor</a>
+    <svg class="sr-only" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m3 17 5-5 4 4 4-6 5 7"/></symbol>
+        <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
+        <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></symbol>
+        <symbol id="i-text" viewBox="0 0 24 24"><path d="M4 5h16M12 5v15m-4 0h8M4 5v3m16-3v3"/></symbol>
+        <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="9" r="5"/><path d="m12 12 8 8m-3-3 3-3m-6 0 3-3"/></symbol>
+        <symbol id="i-code" viewBox="0 0 24 24"><path d="m7 6-6 6 6 6m10-12 6 6-6 6M14 3l-4 18"/></symbol>
+        <symbol id="i-shield" viewBox="0 0 24 24"><path d="m12 3 8 3v5c0 5-4 8-8 10-4-2-8-5-8-10V6zM8 12l3 3 5-6"/></symbol>
+        <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6M20 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h8"/></symbol>
+    </svg>
 
-    <div class="max-w-4xl mx-auto">
-        <header class="text-center mb-8 mt-4">
-            <div class="flex justify-between items-center mb-4">
-                <button onclick="openProModal()" class="flex items-center gap-1.5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold py-1.5 px-4 rounded-xl shadow-lg hover:-translate-y-0.5 active:scale-95 transition-theme text-xs md:text-sm cursor-pointer">
-                    ⭐ Pro
+    <header class="topbar">
+        <div class="shell nav">
+            <a class="brand" href="#mainInput" aria-label="Smart Text Utility, go to editor">
+                <span class="brand-mark" aria-hidden="true">T.</span>
+                <span><span class="brand-name">Smart Text Utility</span><span class="brand-note">By SOLO MAN</span></span>
+            </a>
+            <div class="nav-actions">
+                <button class="button subtle" type="button" onclick="openProModal()">Upcoming</button>
+                <button class="button icon-button" type="button" onclick="toggleTheme()" id="themeBtn" aria-label="Switch to light theme" title="Switch to light theme">
+                    <svg class="icon theme-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg>
+                    <svg class="icon theme-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 13A9 9 0 0 1 11 3a9 9 0 1 0 10 10Z"/></svg>
                 </button>
-                
-                <button onclick="toggleTheme()" id="themeBtn" class="p-2.5 bg-slate-800 border border-slate-700 rounded-xl hover:bg-slate-700 hover:-translate-y-0.5 active:scale-90 transition-theme cursor-pointer shadow-md text-lg" title="Toggle Theme">
-                    🌙
-                </button>
-            </div>
-            
-            <h1 class="text-3xl md:text-4xl font-extrabold mb-2 flex justify-center items-center gap-1">
-                <span>⚡</span><span class="animate-shimmer">Smart Text Utility</span>
-            </h1>
-            <p id="subHeader" class="text-gray-400 text-sm md:text-base transition-theme">Format, clean, and analyze your text instantly. No logs, 100% secure.</p>
-        </header>
-
-        <div id="mainCard" class="bg-slate-800 rounded-3xl p-5 md:p-6 shadow-xl border border-slate-700/70 mb-6 transition-theme">
-            <textarea id="mainInput" class="w-full h-64 bg-slate-900 text-slate-100 p-4 rounded-xl border border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 resize-y placeholder-gray-500 text-lg mb-4 transition-theme" placeholder="Type or paste your text here..."></textarea>
-
-            <!-- Counter Stat Boxes Grid (Added Characters with Spaces) -->
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-6 text-center">
-                <div id="statBox1" class="bg-slate-900 p-3 rounded-xl border border-slate-700 transition-theme">
-                    <span class="block text-xs uppercase text-gray-400 font-semibold">Chars (No Spaces)</span>
-                    <span id="charCount" class="text-xl font-bold text-blue-400">0</span>
-                </div>
-                <div id="statBox5" class="bg-slate-900 p-3 rounded-xl border border-slate-700 transition-theme">
-                    <span class="block text-xs uppercase text-gray-400 font-semibold">Chars (With Spaces)</span>
-                    <span id="charWithSpacesCount" class="text-xl font-bold text-cyan-400">0</span>
-                </div>
-                <div id="statBox2" class="bg-slate-900 p-3 rounded-xl border border-slate-700 transition-theme">
-                    <span class="block text-xs uppercase text-gray-400 font-semibold">Words</span>
-                    <span id="wordCount" class="text-xl font-bold text-emerald-400">0</span>
-                </div>
-                <div id="statBox3" class="bg-slate-900 p-3 rounded-xl border border-slate-700 transition-theme">
-                    <span class="block text-xs uppercase text-gray-400 font-semibold">Lines</span>
-                    <span id="lineCount" class="text-xl font-bold text-amber-400">0</span>
-                </div>
-                <div id="statBox4" class="bg-slate-900 p-3 rounded-xl border border-slate-700 transition-theme col-span-2 sm:col-span-1">
-                    <span class="block text-xs uppercase text-gray-400 font-semibold">Paragraphs</span>
-                    <span id="paraCount" class="text-xl font-bold text-purple-400">0</span>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 mb-6">
-                <button onclick="transformText('upper')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-xl transition transform hover:-translate-y-0.5 active:scale-95 text-xs md:text-sm cursor-pointer shadow-md">UPPERCASE</button>
-                <button onclick="transformText('lower')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-xl transition transform hover:-translate-y-0.5 active:scale-95 text-xs md:text-sm cursor-pointer shadow-md">lowercase</button>
-                <button onclick="transformText('title')" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-3 rounded-xl transition transform hover:-translate-y-0.5 active:scale-95 text-xs md:text-sm cursor-pointer shadow-md">Title Case</button>
-                <button onclick="transformText('clean')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-2 px-3 rounded-xl transition transform hover:-translate-y-0.5 active:scale-95 text-xs md:text-sm cursor-pointer shadow-md">Remove Extra Spaces</button>
-                <button onclick="transformText('slug')" class="bg-amber-600 hover:bg-amber-700 text-white font-medium py-2 px-3 rounded-xl transition transform hover:-translate-y-0.5 active:scale-95 text-xs md:text-sm cursor-pointer shadow-md">Convert to Slug</button>
-                <button onclick="clearText()" class="bg-rose-600 hover:bg-rose-700 text-white font-medium py-2 px-3 rounded-xl transition transform hover:-translate-y-0.5 active:scale-95 text-xs md:text-sm cursor-pointer shadow-md">Clear Content</button>
-                <button onclick="copyToClipboard()" id="copyBtn" class="col-span-2 sm:col-span-1 md:col-span-2 bg-slate-700 hover:bg-slate-600 text-white font-bold py-2 px-3 rounded-xl transition transform hover:-translate-y-0.5 active:scale-95 text-xs md:text-sm flex items-center justify-center gap-1 cursor-pointer shadow-md">
-                    📋 Copy Result
-                </button>
-            </div>
-
-            <hr class="border-slate-700 my-6">
-
-            <div class="space-y-4">
-                <h3 id="panelTitle" class="text-md font-bold text-slate-400 uppercase tracking-wider mb-2 transition-theme">🛠️ Advanced Smart Tools</h3>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div id="utilBox1" class="bg-slate-900/60 p-4 rounded-xl border border-slate-700/80 flex items-center justify-between gap-2 transition-theme">
-                        <div class="flex items-center gap-2">
-                            <label id="lblParas" class="text-xs text-slate-400 font-semibold uppercase transition-theme">Paras:</label>
-                            <input type="number" id="loremCount" min="1" max="20" value="1" class="w-14 p-1 bg-slate-800 border border-slate-600 rounded-lg text-center text-sm text-white focus:outline-none focus:border-blue-500 transition-theme">
-                        </div>
-                        <button onclick="generateRandomText()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-1.5 px-3 rounded-lg transition transform hover:-translate-y-0.5 active:scale-95 text-xs cursor-pointer shadow-sm">
-                            ✨ Random Text
-                        </button>
-                    </div>
-
-                    <div id="utilBox2" class="bg-slate-900/60 p-4 rounded-xl border border-slate-700/80 flex items-center justify-between gap-2 transition-theme">
-                        <div class="flex items-center gap-2">
-                            <label id="lblLength" class="text-xs text-slate-400 font-semibold uppercase transition-theme">Length:</label>
-                            <input type="number" id="passLength" min="6" max="64" value="12" class="w-14 p-1 bg-slate-800 border border-slate-600 rounded-lg text-center text-sm text-white focus:outline-none focus:border-blue-500 transition-theme">
-                        </div>
-                        <button onclick="generatePassword()" class="bg-teal-600 hover:bg-teal-700 text-white font-medium py-1.5 px-3 rounded-lg transition transform hover:-translate-y-0.5 active:scale-95 text-xs cursor-pointer shadow-sm">
-                            🔑 Generate Pass
-                        </button>
-                    </div>
-                </div>
-
-                <div id="utilBox3" class="bg-slate-900/60 p-4 rounded-xl border border-slate-700/80 flex flex-col sm:flex-row items-center justify-between gap-3 transition-theme">
-                    <div class="text-left">
-                        <span id="lblSecret" class="block text-xs uppercase text-gray-400 font-semibold transition-theme">Secret Messaging</span>
-                        <p id="subSecret" class="text-xs text-slate-500 transition-theme">Encrypt text into secure code or decrypt it back.</p>
-                    </div>
-                    <div class="flex gap-2 w-full sm:w-auto">
-                        <button onclick="cipherText('encrypt')" class="w-1/2 sm:w-auto bg-violet-600 hover:bg-violet-700 text-white font-medium py-1.5 px-4 rounded-lg transition transform hover:-translate-y-0.5 active:scale-95 text-xs cursor-pointer shadow-sm">🔒 Encrypt</button>
-                        <button onclick="cipherText('decrypt')" class="w-1/2 sm:w-auto bg-fuchsia-600 hover:bg-fuchsia-700 text-white font-medium py-1.5 px-4 rounded-lg transition transform hover:-translate-y-0.5 active:scale-95 text-xs cursor-pointer shadow-sm">🔓 Decrypt</button>
-                    </div>
-                </div>
             </div>
         </div>
+    </header>
 
-        <div id="notesSection" class="bg-slate-800/50 border border-slate-700/60 rounded-3xl p-5 mb-6 mt-6 transition-theme">
-            <h3 id="notesTitle" class="text-sm font-bold text-blue-400 mb-3 flex items-center gap-1.5 uppercase tracking-wider">
-                💡 Usage Notes & Tips
-            </h3>
-            <ul class="space-y-2 text-xs md:text-sm text-slate-400 transition-theme">
-                <li class="flex gap-2">
-                    <span class="text-blue-500">✔</span>
-                    <span><strong>Privacy Secure:</strong> Data is processed locally in your browser. No logs are saved.</span>
-                </li>
-                <li class="flex gap-2">
-                    <span class="text-emerald-500">✔</span>
-                    <span><strong>Secret Messaging:</strong> Share encrypted codes safely. Friends can decode them here via <strong>Decrypt</strong>.</span>
-                </li>
-            </ul>
-        </div>
+    <main class="shell">
+        <section class="intro" aria-labelledby="pageTitle">
+            <div>
+                <span class="eyebrow">Your everyday text workspace</span>
+                <h1 id="pageTitle">Good text starts here.</h1>
+                <p id="subHeader">Count, clean, and convert. A little less effort, a little more clarity.</p>
+            </div>
+            <span class="local-label"><span class="dot" aria-hidden="true"></span> Free to use · No account needed</span>
+        </section>
 
-        <!-- Developer Professional Footer (Updated Branding) -->
-        <footer id="footerSection" class="bg-slate-800 border border-slate-700 rounded-3xl p-6 md:p-8 text-center transition-theme mb-8 shadow-2xl relative overflow-hidden group">
-            
-            <div class="absolute inset-0 bg-gradient-to-t from-blue-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
-
-            <div class="relative z-10">
-                <div class="inline-flex items-center gap-2 mb-5 bg-slate-900/60 shadow-inner px-5 py-2.5 rounded-2xl border border-slate-700/50">
-                    <span class="text-xl drop-shadow-md">⚙️</span>
-                    <p id="devTitle" class="text-sm md:text-base font-medium text-slate-300 tracking-wide">
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 font-extrabold text-base md:text-lg drop-shadow-sm">Smart Text Utility By Wayne Corp</span>
-                    </p>
-                    <span class="text-[10px] ml-1.5 px-2.5 py-0.5 bg-blue-500/20 text-blue-300 rounded-md font-mono border border-blue-500/30 font-bold tracking-widest uppercase shadow-sm">PRO</span>
-                </div>
-
-                <div class="flex flex-col gap-5 items-center mt-2">
-                    <span id="feedbackTxt" class="text-slate-400 text-sm md:text-base font-medium">Got a project idea or need custom features? Let's connect! 🚀</span>
-                    
-                    <div class="flex flex-col sm:flex-row justify-center items-center gap-4 w-full sm:w-auto">
-                        
-                        <a href="tel:+923066551022" class="w-full sm:w-auto flex items-center justify-between sm:justify-center gap-3 text-emerald-400 hover:text-emerald-300 transition-all duration-300 font-semibold transform hover:-translate-y-1 hover:scale-105 active:scale-95 bg-slate-900/80 hover:bg-slate-800 px-5 py-3 rounded-2xl border border-slate-700 hover:border-emerald-500/50 hover:shadow-[0_0_20px_rgba(16,185,129,0.2)] group/phone">
-                            <div class="bg-emerald-500/10 p-2 rounded-xl group-hover/phone:bg-emerald-500/20 transition-colors">
-                                📞
-                            </div>
-                            <span class="tracking-wide text-sm md:text-base">+92 306 6551022</span>
-                        </a>
-                        
-                        <a href="mailto:4salmanskennedy@gmail.com" class="w-full sm:w-auto flex items-center justify-between sm:justify-center gap-3 text-amber-400 hover:text-amber-300 transition-all duration-300 font-semibold transform hover:-translate-y-1 hover:scale-105 active:scale-95 bg-slate-900/80 hover:bg-slate-800 px-5 py-3 rounded-2xl border border-slate-700 hover:border-amber-500/50 hover:shadow-[0_0_20px_rgba(245,158,11,0.2)] group/email">
-                            <div class="bg-amber-500/10 p-2 rounded-xl group-hover/email:bg-amber-500/20 transition-colors">
-                                ✉️
-                            </div>
-                            <span class="tracking-wide text-sm md:text-base">4salmanskennedy@gmail.com</span>
-                        </a>
-
+        <div class="workspace">
+            <section class="editor-column" aria-labelledby="editorTitle">
+                <div id="mainCard" class="editor-card">
+                    <div class="editor-heading">
+                        <h2 id="editorTitle">Text editor</h2>
+                        <span>Make it yours.</span>
+                    </div>
+                    <div class="toolbar" role="group" aria-label="Text formatting">
+                        <button class="button" type="button" onclick="transformText('upper')">UPPERCASE</button>
+                        <button class="button" type="button" onclick="transformText('lower')">lowercase</button>
+                        <button class="button" type="button" onclick="transformText('title')">Title Case</button>
+                        <button class="button" type="button" onclick="transformText('clean')">Clean spaces</button>
+                        <button class="button" type="button" onclick="transformText('slug')">Create slug</button>
+                    </div>
+                    <label class="sr-only" for="mainInput">Text to count, format, or convert</label>
+                    <textarea id="mainInput" dir="auto" placeholder="A blank page. A fresh start.&#10;&#10;Type or paste your text here…" spellcheck="false" aria-describedby="editorHelp"></textarea>
+                    <div class="editor-actions">
+                        <p class="editor-hint" id="editorHelp">Your counts update as you type.</p>
+                        <div class="row">
+                            <button class="button subtle danger" type="button" onclick="clearText()">Clear</button>
+                            <button id="copyBtn" class="button primary bg-slate-700" type="button" onclick="copyToClipboard()">
+                                <svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg> Copy text
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </footer>
-    </div>
 
-    <div id="proModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
-        <div id="modalContent" class="bg-slate-800 border border-slate-700 max-w-md w-full mx-4 rounded-3xl p-6 shadow-2xl relative transform scale-95 transition-transform duration-300 text-center">
-            <button onclick="closeProModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white font-bold text-lg cursor-pointer">&times;</button>
-            
-            <div class="w-12 h-12 bg-amber-500/10 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4">⭐</div>
-            <h3 id="modalHead" class="text-xl font-extrabold text-white mb-2">Smart Text Premium Tools</h3>
-            <p id="modalSub" class="text-xs text-gray-400 mb-6">Unlock powerful advanced mechanics to speed up your daily workflows.</p>
-            
-            <div class="space-y-3 text-left mb-6 text-xs md:text-sm">
-                <div id="mItem1" class="flex items-start gap-2.5 bg-slate-900/50 p-2.5 rounded-xl border border-slate-700/50"><span class="text-amber-400">⚡</span><div><strong class="text-gray-200 block">AI Text Summarizer</strong> Extract key insights from long paragraphs instantly.</div></div>
-                <div id="mItem2" class="flex items-start gap-2.5 bg-slate-900/50 p-2.5 rounded-xl border border-slate-700/50"><span class="text-amber-400">🖨️</span><div><strong class="text-gray-200 block">Image to Text (OCR Converter)</strong> Upload photos or snapshots to extract editable text.</div></div>
-                <div id="mItem3" class="flex items-start gap-2.5 bg-slate-900/50 p-2.5 rounded-xl border border-slate-700/50"><span class="text-amber-400">📁</span><div><strong class="text-gray-200 block">Bulk File Processing</strong> Format multiple text sheets or CSV documents at once.</div></div>
+                <div class="stats" role="group" aria-label="Live text statistics">
+                    <div id="statBox2" class="stat"><strong id="wordCount">0</strong><span>Words</span></div>
+                    <div id="statBox5" class="stat"><strong id="charWithSpacesCount">0</strong><span>Characters<br>with spaces</span></div>
+                    <div id="statBox1" class="stat"><strong id="charCount">0</strong><span>Characters<br>without spaces</span></div>
+                    <div id="statBox3" class="stat"><strong id="lineCount">0</strong><span>Non-empty lines</span></div>
+                    <div id="statBox4" class="stat"><strong id="paraCount">0</strong><span>Paragraphs</span></div>
+                </div>
+
+                <section id="notesSection" class="notes" aria-label="Usage notes">
+                    <div class="note">
+                        <svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg>
+                        <div><h3>Processed in your browser</h3><p>Text tools and image recognition run on your device.</p></div>
+                    </div>
+                    <div class="note">
+                        <svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>
+                        <div><h3>A quick check goes a long way</h3><p>Review OCR results before using them. Clear, printed English works best.</p></div>
+                    </div>
+                </section>
+            </section>
+
+            <aside class="tools" aria-labelledby="panelTitle">
+                <div class="tools-heading"><h2 id="panelTitle">A few more useful tools</h2><span>ALL FREE</span></div>
+                <section id="utilBox4" class="tool featured">
+                    <div class="tool-title"><svg class="icon" aria-hidden="true"><use href="#i-image"/></svg><h3>Image to text</h3></div>
+                    <p>Turn words in a picture into text you can edit. Best with printed English.</p>
+                    <button class="button primary wide" type="button" onclick="openOCRModal()">Choose an image <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+                </section>
+                <section id="utilBox1" class="tool">
+                    <div class="tool-title"><svg class="icon" aria-hidden="true"><use href="#i-text"/></svg><h3>Placeholder text</h3></div>
+                    <p>Lorem ipsum for your next layout.</p>
+                    <div class="row">
+                        <div class="number-field"><label id="lblParas" for="loremCount">Paragraphs</label><input type="number" id="loremCount" min="1" max="20" value="1"></div>
+                        <button class="button" type="button" onclick="generateRandomText()">Generate</button>
+                    </div>
+                </section>
+                <section id="utilBox2" class="tool">
+                    <div class="tool-title"><svg class="icon" aria-hidden="true"><use href="#i-key"/></svg><h3>Password generator</h3></div>
+                    <p>Create a mix of letters, numbers, and symbols.</p>
+                    <div class="row">
+                        <div class="number-field"><label id="lblLength" for="passLength">Length</label><input type="number" id="passLength" min="6" max="64" value="12"></div>
+                        <button class="button" type="button" onclick="generatePassword()">Generate</button>
+                    </div>
+                </section>
+                <section id="utilBox3" class="tool">
+                    <div class="tool-title"><svg class="icon" aria-hidden="true"><use href="#i-code"/></svg><h3 id="lblSecret">Base64 converter</h3></div>
+                    <p id="subSecret">Encode or decode text. Base64 is not encryption and does not keep messages secret.</p>
+                    <div class="row" role="group" aria-label="Base64 conversion">
+                        <button class="button wide" type="button" onclick="cipherText('encrypt')">Encode</button>
+                        <button class="button wide" type="button" onclick="cipherText('decrypt')">Decode</button>
+                    </div>
+                </section>
+            </aside>
+        </div>
+    </main>
+
+    <footer id="footerSection" class="shell footer">
+        <div class="company">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                <path d="M10 51L32 31L54 51M22 51L32 41L42 51" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="32" cy="15" r="3.5" fill="currentColor"/>
+                <path d="M32 22V31M26 26L32 22L38 26" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div><small>A project by</small><strong>SOLO MAN</strong></div>
+        </div>
+        <div class="footer-end">
+            <div class="feedback"><p id="feedbackTxt">An idea, a suggestion, a hello?</p><a href="mailto:4salmanwayne@gmail.com">4salmanwayne@gmail.com</a></div>
+            <span id="websiteVersion" class="version" aria-label="Website version 1.5.0">v1.5.0</span>
+        </div>
+    </footer>
+
+    <div id="proModal" class="modal hidden opacity-0" role="dialog" aria-modal="true" aria-labelledby="modalHead" onclick="if (event.target === this) closeProModal()">
+        <div id="modalContent" class="modal-card scale-95" tabindex="-1">
+            <button class="button subtle modal-close" type="button" onclick="closeProModal()" aria-label="Close upcoming tools">&times;</button>
+            <div class="modal-intro"><span class="eyebrow">Looking ahead</span><h2 id="modalHead">More tools on the horizon.</h2><p id="modalSub">These premium tools are planned and are not available yet.</p></div>
+            <div class="roadmap-list">
+                <div id="mItem1" class="roadmap-item"><strong>AI Text Summarizer</strong><p>Extract key points from longer text.</p></div>
+                <div id="mItem2" class="roadmap-item"><strong>AI Text Paraphraser</strong><p>Rewrite text while keeping its meaning.</p></div>
+                <div id="mItem3" class="roadmap-item"><strong>Bulk File Processing</strong><p>Format multiple text or CSV files in one go.</p></div>
             </div>
-            
-            <div id="mPrice" class="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 rounded-2xl p-3.5 mb-5">
-                <span class="text-2xl font-black text-amber-400">$1.99</span> <span class="text-xs text-gray-400">/ month</span>
-            </div>
-            
-            <button class="w-full bg-slate-700 text-gray-300 font-bold py-2.5 px-4 rounded-xl cursor-not-allowed text-xs uppercase tracking-wider">
-                ⏳ Coming Soon • Get Notified
-            </button>
+            <div id="mPrice" class="roadmap-price">Planned price · <strong>$1.99</strong> / month</div>
+            <button class="button wide" type="button" disabled>Coming soon</button>
         </div>
     </div>
 
-    <script>
+    <!-- Image to Text OCR Modal -->
+    <div id="ocrModal" class="modal hidden opacity-0" role="dialog" aria-modal="true" aria-labelledby="ocrModalHead" onclick="if (event.target === this) closeOCRModal()">
+        <div id="ocrModalContent" class="modal-card scale-95" tabindex="-1">
+            <button class="button subtle modal-close" type="button" onclick="closeOCRModal()" aria-label="Close image to text tool">&times;</button>
+            <div class="modal-intro"><span class="eyebrow">From image to words</span><h2 id="ocrModalHead">Image to text</h2><p id="ocrModalSub">Upload a clear image, then review and edit the extracted text.</p></div>
+            <label id="ocrDropZone" class="drop-zone" for="ocrImageInput">
+                <input id="ocrImageInput" class="sr-only" type="file" accept="image/jpeg,image/png,image/webp,image/bmp">
+                <svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>
+                <strong id="ocrDropTitle">Choose an image or drop it here</strong>
+                <small>JPG, PNG, WEBP or BMP · Up to 10 MB</small>
+            </label>
+            <p id="ocrFileError" class="hidden" role="alert"></p>
+            <div id="ocrPreviewWrap" class="preview-box hidden">
+                <img id="ocrPreview" alt="Selected image preview">
+                <div class="preview-meta"><span id="ocrFileName"></span><button class="button subtle" type="button" onclick="resetOCRImage()">Change image</button></div>
+            </div>
+            <div class="field-group">
+                <label class="field-label" for="ocrLanguage">Text language</label>
+                <select id="ocrLanguage" aria-describedby="ocrAccuracyNote"><option value="eng">English</option><option value="urd">Urdu — experimental</option><option value="eng+urd">English + Urdu — experimental</option></select>
+                <p id="ocrAccuracyNote">Urdu and mixed text can contain major errors. Please review the result.</p>
+            </div>
+            <button id="ocrExtractBtn" class="button primary wide" type="button" onclick="extractImageText()" disabled>Extract text</button>
+            <div id="ocrProgressWrap" class="hidden">
+                <div class="progress-labels"><span id="ocrStatus" role="status">Preparing OCR…</span><span id="ocrPercent">0%</span></div>
+                <div class="progress-track"><div id="ocrProgressBar" style="width: 0%"></div></div>
+            </div>
+            <div id="ocrResultWrap" class="result-box hidden">
+                <label class="field-label" for="ocrResult">Extracted text</label>
+                <textarea id="ocrResult" dir="auto" placeholder="Extracted text will appear here…"></textarea>
+                <div class="result-actions"><button id="ocrCopyBtn" class="button" type="button" onclick="copyOCRResult()">Copy text</button><button class="button primary" type="button" onclick="useOCRInEditor()">Use in editor</button></div>
+            </div>
+            <p id="ocrPrivacy" class="privacy-note">Image recognition runs in your browser. OCR resources may need an internet connection to load.</p>
+        </div>
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>    <script>
         const textarea = document.getElementById('mainInput');
         
         // Counter Event Listener
@@ -334,8 +529,275 @@
                 alert("Error: Invalid code format for decryption! ❌");
             }
         }
+// Image to Text (OCR)
+let selectedOCRFile = null;
+let ocrPreviewUrl = null;
+let isOCRProcessing = false;
 
-        // ⭐ Premium Modal Triggers
+const ocrInput = document.getElementById('ocrImageInput');
+const ocrDropZone = document.getElementById('ocrDropZone');
+
+function openOCRModal() {
+    const modal = document.getElementById('ocrModal');
+    modal.classList.remove('hidden');
+
+    setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        document.getElementById('ocrModalContent').classList.remove('scale-95');
+    }, 10);
+}
+
+function closeOCRModal() {
+    if (isOCRProcessing) return;
+
+    const modal = document.getElementById('ocrModal');
+    modal.classList.add('opacity-0');
+    document.getElementById('ocrModalContent').classList.add('scale-95');
+
+    setTimeout(() => modal.classList.add('hidden'), 300);
+}
+
+function showOCRError(message) {
+    const error = document.getElementById('ocrFileError');
+    error.textContent = message;
+    error.classList.remove('hidden');
+}
+
+function clearOCRError() {
+    const error = document.getElementById('ocrFileError');
+    error.textContent = '';
+    error.classList.add('hidden');
+}
+
+function handleOCRFile(file) {
+    const allowedTypes = [
+        'image/jpeg',
+        'image/png',
+        'image/webp',
+        'image/bmp'
+    ];
+
+    clearOCRError();
+
+    if (!file || !allowedTypes.includes(file.type)) {
+        showOCRError('Please select a JPG, PNG, WEBP or BMP image.');
+        return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+        showOCRError('Image size must be 10 MB or less.');
+        return;
+    }
+
+    if (ocrPreviewUrl) {
+        URL.revokeObjectURL(ocrPreviewUrl);
+    }
+
+    selectedOCRFile = file;
+    ocrPreviewUrl = URL.createObjectURL(file);
+
+    document.getElementById('ocrPreview').src = ocrPreviewUrl;
+    document.getElementById('ocrFileName').textContent = file.name;
+    document.getElementById('ocrPreviewWrap').classList.remove('hidden');
+    document.getElementById('ocrResultWrap').classList.add('hidden');
+    document.getElementById('ocrProgressWrap').classList.add('hidden');
+    document.getElementById('ocrExtractBtn').disabled = false;
+}
+
+function resetOCRImage() {
+    if (isOCRProcessing) return;
+
+    if (ocrPreviewUrl) {
+        URL.revokeObjectURL(ocrPreviewUrl);
+    }
+
+    selectedOCRFile = null;
+    ocrPreviewUrl = null;
+    ocrInput.value = '';
+
+    document.getElementById('ocrPreview').removeAttribute('src');
+    document.getElementById('ocrPreviewWrap').classList.add('hidden');
+    document.getElementById('ocrResultWrap').classList.add('hidden');
+    document.getElementById('ocrProgressWrap').classList.add('hidden');
+    document.getElementById('ocrResult').value = '';
+    document.getElementById('ocrExtractBtn').disabled = true;
+
+    clearOCRError();
+}
+
+ocrInput.addEventListener('change', event => {
+    handleOCRFile(event.target.files[0]);
+});
+
+['dragenter', 'dragover'].forEach(eventName => {
+    ocrDropZone.addEventListener(eventName, event => {
+        event.preventDefault();
+        ocrDropZone.classList.add('ocr-drag-active');
+    });
+});
+
+['dragleave', 'drop'].forEach(eventName => {
+    ocrDropZone.addEventListener(eventName, event => {
+        event.preventDefault();
+        ocrDropZone.classList.remove('ocr-drag-active');
+    });
+});
+
+ocrDropZone.addEventListener('drop', event => {
+    handleOCRFile(event.dataTransfer.files[0]);
+});
+
+function updateOCRProgress(message) {
+    const value = typeof message.progress === 'number'
+        ? message.progress
+        : 0;
+
+    const percent = Math.max(
+        0,
+        Math.min(100, Math.round(value * 100))
+    );
+
+    const labels = {
+        'loading tesseract core': 'Loading OCR engine...',
+        'initializing tesseract': 'Starting OCR engine...',
+        'loading language traineddata': 'Downloading language data...',
+        'initializing api': 'Preparing language...',
+        'recognizing text': 'Reading image...'
+    };
+
+    document.getElementById('ocrStatus').textContent =
+        labels[message.status] || 'Processing image...';
+
+    document.getElementById('ocrPercent').textContent = `${percent}%`;
+    document.getElementById('ocrProgressBar').style.width = `${percent}%`;
+}
+
+async function extractImageText() {
+    if (!selectedOCRFile || isOCRProcessing) return;
+
+    const button = document.getElementById('ocrExtractBtn');
+    const progressWrap = document.getElementById('ocrProgressWrap');
+    const resultWrap = document.getElementById('ocrResultWrap');
+
+    let worker = null;
+
+    clearOCRError();
+
+    isOCRProcessing = true;
+    button.disabled = true;
+    button.textContent = '⏳ Extracting Text...';
+
+    progressWrap.classList.remove('hidden');
+    resultWrap.classList.add('hidden');
+
+    updateOCRProgress({
+        status: 'loading tesseract core',
+        progress: 0
+    });
+
+    try {
+        if (!window.Tesseract) {
+            throw new Error('OCR library unavailable');
+        }
+
+        const language = document.getElementById('ocrLanguage').value;
+
+        worker = await Tesseract.createWorker(
+            language,
+            1,
+            { logger: updateOCRProgress }
+        );
+
+        const result = await worker.recognize(
+            selectedOCRFile,
+            { rotateAuto: true }
+        );
+
+        const extractedText = result.data.text.trim();
+
+        if (!extractedText) {
+            showOCRError(
+                'No readable text was found. Try a clearer, straight image.'
+            );
+        } else {
+            document.getElementById('ocrResult').value = extractedText;
+            resultWrap.classList.remove('hidden');
+
+            document.getElementById('ocrStatus').textContent =
+                'Text extracted successfully!';
+
+            document.getElementById('ocrPercent').textContent = '100%';
+            document.getElementById('ocrProgressBar').style.width = '100%';
+        }
+    } catch (error) {
+        console.error('OCR error:', error);
+
+        showOCRError(
+            'Text extraction failed. Check your internet connection and try again.'
+        );
+
+        progressWrap.classList.add('hidden');
+    } finally {
+        if (worker) {
+            await worker.terminate();
+        }
+
+        isOCRProcessing = false;
+        button.disabled = false;
+        button.textContent = '🔍 Extract Text Again';
+    }
+}
+
+async function copyOCRResult() {
+    const result = document.getElementById('ocrResult');
+
+    if (!result.value) return;
+
+    try {
+        await navigator.clipboard.writeText(result.value);
+    } catch (error) {
+        result.select();
+        document.execCommand('copy');
+    }
+
+    const button = document.getElementById('ocrCopyBtn');
+    const oldText = button.textContent;
+
+    button.textContent = '✓ Copied!';
+
+    setTimeout(() => {
+        button.textContent = oldText;
+    }, 1500);
+}
+
+function useOCRInEditor() {
+    const result = document.getElementById('ocrResult').value;
+
+    if (!result) return;
+
+    textarea.value = result;
+    textarea.dispatchEvent(new Event('input'));
+
+    closeOCRModal();
+
+    textarea.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+    });
+
+    textarea.focus();
+}
+
+document.addEventListener('keydown', event => {
+    const modal = document.getElementById('ocrModal');
+
+    if (
+        event.key === 'Escape' &&
+        !modal.classList.contains('hidden')
+    ) {
+        closeOCRModal();
+    }
+});        // ⭐ Premium Modal Triggers
         function openProModal() {
             const modal = document.getElementById('proModal');
             modal.classList.remove('hidden');
@@ -354,124 +816,76 @@
             }, 300);
         }
 
-        // Dark / Light Mode Theme Switching Engine
+                // Dark / Light Mode Theme Switching Engine
         let isDarkMode = true;
-        
+
+        function applyTheme() {
+            document.documentElement.dataset.theme = isDarkMode ? 'dark' : 'light';
+            const label = isDarkMode ? 'Switch to light theme' : 'Switch to dark theme';
+            const button = document.getElementById('themeBtn');
+            button.setAttribute('aria-label', label);
+            button.title = label;
+        }
+
         function toggleTheme() {
             isDarkMode = !isDarkMode;
-            const body = document.getElementById('bodyTheme');
-            const mainCard = document.getElementById('mainCard');
-            const mainInput = document.getElementById('mainInput');
-            const subHeader = document.getElementById('subHeader');
-            const themeBtn = document.getElementById('themeBtn');
-            const panelTitle = document.getElementById('panelTitle');
-            const lblParas = document.getElementById('lblParas');
-            const lblLength = document.getElementById('lblLength');
-            const lblSecret = document.getElementById('lblSecret');
-            const subSecret = document.getElementById('subSecret');
-            const notesSection = document.getElementById('notesSection');
-            const notesTitle = document.getElementById('notesTitle');
-            const footerSection = document.getElementById('footerSection');
-            const devTitle = document.getElementById('devTitle');
-            const feedbackTxt = document.getElementById('feedbackTxt');
-            const modalContent = document.getElementById('modalContent');
-            const modalHead = document.getElementById('modalHead');
-            const modalSub = document.getElementById('modalSub');
-            
-            const statBoxes = [1, 2, 3, 4, 5].map(id => document.getElementById(`statBox${id}`));
-            const utilBoxes = [1, 2, 3].map(id => document.getElementById(`utilBox${id}`));
-            const modalItems = [1, 2, 3].map(id => document.getElementById(`mItem${id}`));
+            applyTheme();
+            try { localStorage.setItem('smarttext-theme', isDarkMode ? 'dark' : 'light'); }
+            catch (error) { /* Theme still works when storage is unavailable. */ }
+        }
 
-            if (!isDarkMode) {
-                // Light Mode
-                body.classList.replace('bg-slate-900', 'bg-slate-50');
-                body.classList.replace('text-slate-100', 'text-slate-800');
-                mainCard.classList.replace('bg-slate-800', 'bg-white');
-                mainCard.classList.replace('border-slate-700/70', 'border-gray-200');
-                mainInput.classList.replace('bg-slate-900', 'bg-gray-50');
-                mainInput.classList.replace('text-slate-100', 'text-gray-900');
-                mainInput.classList.replace('border-slate-600', 'border-gray-300');
-                subHeader.classList.replace('text-gray-400', 'text-gray-600');
-                themeBtn.classList.replace('bg-slate-800', 'bg-gray-200');
-                themeBtn.classList.replace('border-slate-700', 'border-gray-300');
-                panelTitle.classList.replace('text-slate-400', 'text-gray-500');
-                lblParas.classList.replace('text-slate-400', 'text-gray-600');
-                lblLength.classList.replace('text-slate-400', 'text-gray-600');
-                lblSecret.classList.replace('text-gray-400', 'text-gray-700');
-                subSecret.classList.replace('text-slate-500', 'text-gray-500');
-                notesSection.classList.replace('bg-slate-800/50', 'bg-gray-100');
-                notesSection.classList.replace('border-slate-700/60', 'border-gray-200');
-                notesTitle.classList.replace('text-blue-400', 'text-blue-600');
-                footerSection.classList.replace('bg-slate-800', 'bg-gray-100');
-                footerSection.classList.replace('border-slate-700', 'border-gray-200');
-                devTitle.classList.replace('text-slate-300', 'text-gray-700');
-                feedbackTxt.classList.replace('text-slate-400', 'text-gray-600');
-                modalContent.classList.replace('bg-slate-800', 'bg-white');
-                modalContent.classList.replace('border-slate-700', 'border-gray-200');
-                modalHead.classList.replace('text-white', 'text-gray-800');
-                modalSub.classList.replace('text-gray-400', 'text-gray-500');
-                document.getElementById('mPrice').classList.replace('bg-gradient-to-r', 'bg-gray-100');
-                
-                statBoxes.forEach(box => {
-                    box.classList.replace('bg-slate-900', 'bg-gray-50');
-                    box.classList.replace('border-slate-700', 'border-gray-200');
-                });
-                utilBoxes.forEach(box => {
-                    box.classList.replace('bg-slate-900/60', 'bg-gray-50');
-                    box.classList.replace('border-slate-700/80', 'border-gray-200');
-                });
-                modalItems.forEach(item => {
-                    item.classList.replace('bg-slate-900/50', 'bg-gray-50');
-                    item.classList.replace('border-slate-700/50', 'border-gray-200');
-                });
-                
-                themeBtn.innerHTML = "☀️";
+        try { isDarkMode = localStorage.getItem('smarttext-theme') !== 'light'; }
+        catch (error) { /* Default to dark mode. */ }
+        applyTheme();
+
+        // Keep keyboard focus inside the open dialog and return it on close.
+        let activeDialog = null;
+        let returnFocus = null;
+        const dialogs = ['proModal', 'ocrModal'].map(id => document.getElementById(id));
+
+        function syncDialogs() {
+            const next = dialogs.find(dialog => !dialog.classList.contains('hidden')) || null;
+            if (next === activeDialog) return;
+            if (next) {
+                returnFocus = document.activeElement;
+                activeDialog = next;
+                document.body.style.overflow = 'hidden';
+                document.querySelector('header').inert = true;
+                document.querySelector('main').inert = true;
+                document.querySelector('footer').inert = true;
+                next.querySelector('.modal-close').focus({ preventScroll: true });
             } else {
-                // Dark Mode
-                body.classList.replace('bg-slate-50', 'bg-slate-900');
-                body.classList.replace('text-slate-800', 'text-slate-100');
-                mainCard.classList.replace('bg-white', 'bg-slate-800');
-                mainCard.classList.replace('border-gray-200', 'border-slate-700/70');
-                mainInput.classList.replace('bg-gray-50', 'bg-slate-900');
-                mainInput.classList.replace('text-gray-900', 'text-slate-100');
-                mainInput.classList.replace('border-gray-300', 'border-slate-600');
-                subHeader.classList.replace('text-gray-600', 'text-gray-400');
-                themeBtn.classList.replace('bg-gray-200', 'bg-slate-800');
-                themeBtn.classList.replace('border-gray-300', 'border-slate-700');
-                panelTitle.classList.replace('text-gray-500', 'text-slate-400');
-                lblParas.classList.replace('text-gray-600', 'text-slate-400');
-                lblLength.classList.replace('text-gray-600', 'text-slate-400');
-                lblSecret.classList.replace('text-gray-700', 'text-gray-400');
-                subSecret.classList.replace('text-gray-500', 'text-slate-500');
-                notesSection.classList.replace('bg-gray-100', 'bg-slate-800/50');
-                notesSection.classList.replace('border-gray-200', 'border-slate-700/60');
-                notesTitle.classList.replace('text-blue-600', 'text-blue-400');
-                footerSection.classList.replace('bg-gray-100', 'bg-slate-800');
-                footerSection.classList.replace('border-gray-200', 'border-slate-700');
-                devTitle.classList.replace('text-gray-700', 'text-slate-300');
-                feedbackTxt.classList.replace('text-gray-600', 'text-slate-400');
-                modalContent.classList.replace('bg-white', 'bg-slate-800');
-                modalContent.classList.replace('border-gray-200', 'border-slate-700');
-                modalHead.classList.replace('text-gray-800', 'text-white');
-                modalSub.classList.replace('text-gray-500', 'text-gray-400');
-                document.getElementById('mPrice').classList.replace('bg-gray-100', 'bg-gradient-to-r');
-
-                statBoxes.forEach(box => {
-                    box.classList.replace('bg-gray-50', 'bg-slate-900');
-                    box.classList.replace('border-gray-200', 'border-slate-700');
-                });
-                utilBoxes.forEach(box => {
-                    box.classList.replace('bg-gray-50', 'bg-slate-900/60');
-                    box.classList.replace('border-gray-200', 'border-slate-700/80');
-                });
-                modalItems.forEach(item => {
-                    item.classList.replace('bg-gray-50', 'bg-slate-900/50');
-                    item.classList.replace('border-gray-200', 'border-slate-700/50');
-                });
-
-                themeBtn.innerHTML = "🌙";
+                activeDialog = null;
+                document.body.style.overflow = '';
+                document.querySelector('header').inert = false;
+                document.querySelector('main').inert = false;
+                document.querySelector('footer').inert = false;
+                // Keep the editor focused when "Use in editor" was clicked.
+                if (!document.getElementById('mainInput').matches(':focus')) {
+                    returnFocus?.focus({ preventScroll: true });
+                }
             }
         }
+
+        const dialogObserver = new MutationObserver(syncDialogs);
+        dialogs.forEach(dialog => dialogObserver.observe(dialog, { attributes: true, attributeFilter: ['class'] }));
+        document.addEventListener('click', event => {
+            if (event.target.closest('[onclick="useOCRInEditor()"]')) {
+                returnFocus = document.getElementById('mainInput');
+            }
+        }, true);
+        document.addEventListener('keydown', event => {
+            if (!activeDialog) return;
+            if (event.key === 'Escape' && activeDialog.id === 'proModal') closeProModal();
+            if (event.key !== 'Tab') return;
+            const items = [...activeDialog.querySelectorAll('button, input, select, textarea, a[href], [tabindex="0"]')]
+                .filter(element => !element.disabled && element.getClientRects().length && !element.closest('.hidden'));
+            const first = items[0];
+            const last = items[items.length - 1];
+            if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+            if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+        });
+
     </script>
 </body>
 </html>
