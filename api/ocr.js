@@ -69,7 +69,7 @@ module.exports = async function handler(req, res) {
     
     const client = new PaddleOCRClient({
       token,
-      requestTimeout: 15000,
+            requestTimeout: 30000,
       pollTimeout: 40000,
       
       fetch: async (url, options) => {
@@ -90,7 +90,7 @@ module.exports = async function handler(req, res) {
       model: Model.PaddleOCRVL,
       options: { useLayoutDetection: true }
     }, {
-      signal: AbortSignal.timeout(50000)
+            signal: AbortSignal.timeout(55000)
     });
     
     const text = result.pages
