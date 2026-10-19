@@ -138,7 +138,13 @@ module.exports = async function handler(req, res) {
       });
     }
 
-    const status = await client.getStatus(job.jobId, options);
+        const status = await client.getStatus(job.jobId, options);
+
+    console.info('OCR_JOB_STATE', {
+      state: status.state,
+      totalPages: status.progress?.totalPages ?? null,
+      extractedPages: status.progress?.extractedPages ?? null
+    });
     if (status.state === 'failed') return fail(422, 'OCR could not process this image. Try a clearer image.');
     if (status.state !== 'done') {
       return res.status(202).json({ state: status.state, model: MODEL });
@@ -153,7 +159,14 @@ module.exports = async function handler(req, res) {
     if (text.length > 300000) return fail(422, 'The OCR result is too large. Try a smaller image.');
     return res.status(200).json({ state: 'done', text, model: MODEL });
   } catch (error) {
-    console.error('OCR_REQUEST_FAILED', { action, type: error.name });
+        console.error('OCR_REQUEST_FAILED', {
+      action,
+      type: error.name,
+      httpStatus: error.statusCode ?? null,
+      detail: error.name === 'InvalidRequestError'
+        ? String(error.message || '').replaceAll(token, '[redacted]').slice(0, 400)
+        : undefined
+    });
     if (oversizedResponse) return fail(422, 'The OCR result is too large. Try a smaller image.');
     if (error.name === 'AuthError') return fail(503, 'OCR access needs updating. Contact the site owner.');
     if (error.name === 'RateLimitError') return fail(429, 'OCR quota or rate limit reached. Please try later.');
