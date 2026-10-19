@@ -369,71 +369,89 @@ textarea::placeholder { color: var(--muted); opacity: .9; }
     .modal-card { padding: 22px 18px; max-height: calc(100dvh - 24px); border-radius: 16px; }
 }
 @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
-}/* v2.1.6 — rounded text and collapsible formatting tools */
-.workspace, .footer, .modal, .version {
-    font-family: "Arial Rounded MT Bold", "Nunito", "Trebuchet MS", Arial, sans-serif;
+*, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
+}
+/* v2.2.0 — editor menus, history, and formatting popup */
+.workspace, .footer, .modal, .version, .editor-popup {
+font-family: "Arial Rounded MT Bold", "Nunito", "Trebuchet MS", Arial, sans-serif;
 }
 
-.format-tools { width: 100%; }
-.format-tools > summary {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 12px 16px;
-    border: 1px solid #0d5c49;
-    border-radius: 10px;
-    background: #126e59;
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 800;
-    list-style: none;
-    cursor: pointer;
-    overflow: hidden;
+.toolbar .format-trigger {
+position: relative;
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 12px;
+padding: 12px 16px;
+border: 1px solid #0d5c49;
+border-radius: 10px;
+background: #126e59;
+color: #ffffff;
+font-size: 14px;
+font-weight: 800;
+overflow: hidden;
+width: 100%;
 }
-.format-tools > summary::-webkit-details-marker { display: none; }
-.format-tools > summary > * { position: relative; z-index: 1; }
-.format-tools > summary::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 60%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 35%), transparent);
-    animation: format-shine 4s ease-in-out infinite;
-    pointer-events: none;
+.toolbar .format-trigger:hover:not(:disabled) { background: #126e59; border-color: #0d5c49; }
+.format-trigger > * { position: relative; z-index: 1; }
+.format-trigger::before {
+content: "";
+position: absolute;
+top: 0;
+left: 0;
+width: 60%;
+height: 100%;
+background: linear-gradient(90deg, transparent, rgb(255 255 255 / 35%), transparent);
+animation: format-shine 4s ease-in-out infinite;
+pointer-events: none;
 }
-.format-tools[open] > summary {
-    background: #ffffff;
-    color: #126e59;
-    border-color: #d9e2e9;
+.toolbar .format-trigger[aria-expanded="true"],
+.toolbar .format-trigger[aria-expanded="true"]:hover:not(:disabled) {
+background: #ffffff;
+color: #126e59;
+border-color: #d9e2e9;
 }
-.format-tools[open] > summary::before { display: none; }
+.format-trigger[aria-expanded="true"]::before { display: none; }
 .format-chevron { transition: transform .2s; }
-.format-tools[open] .format-chevron { transform: rotate(180deg); }
+.format-trigger[aria-expanded="true"] .format-chevron { transform: rotate(180deg); }
 .format-options {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
-    padding-top: 10px;
+display: grid;
+grid-template-columns: repeat(2, minmax(0, 1fr));
+gap: 8px;
+margin-top: 18px;
 }
 .format-options .button { font-weight: 800; }
+.format-options .button:last-child { grid-column: 1 / -1; }
+.editor-actions-v220 { display: block; }
+.editor-command-row { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 6px; }
+.editor-command-row .editor-command { width: 100%; min-width: 0; min-height: 48px; padding: 8px 4px; font-size: 12px; font-weight: 800; }
+.editor-history { display: flex; gap: 4px; }
+.editor-history .button { width: 44px; min-height: 44px; padding: 0; }
+.editor-actions-v220 .editor-status { display: block; text-align: center; margin-top: 9px; min-height: 18px; }
+body.editor-popup-open { overflow: hidden; }
+.editor-popup { width: min(500px, calc(100% - 28px)); max-height: calc(100dvh - 28px); margin: auto; padding: 24px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); color: var(--ink); box-shadow: var(--shadow); overflow-y: auto; }
+.editor-popup::backdrop { background: rgb(4 10 17 / 75%); }
+.editor-popup h2 { padding-right: 35px; font-size: 21px; line-height: 1.3; }
+.editor-popup p { color: var(--muted); font-size: 12px; margin-top: 10px; }
+.editor-popup .popup-close { position: absolute; top: 14px; right: 14px; width: 36px; min-height: 36px; padding: 0; font-size: 23px; }
+.editor-choice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 18px; }
+.editor-popup textarea { display: block; width: 100%; height: 220px; min-height: 160px; margin-top: 12px; padding: 14px; border: 1px solid var(--line); background: var(--editor); color: var(--ink); font-size: 16px; line-height: 1.8; resize: vertical; }
+.editor-popup .selection-confirm { width: 100%; margin-top: 12px; }
+.editor-popup .selection-label { display: block; margin-top: 14px; font-size: 12px; font-weight: 800; }
+.editor-popup .action-status { min-height: 20px; }
 
 @keyframes format-shine {
-    0%, 60% { transform: translateX(-180%) skewX(-20deg); }
-    100% { transform: translateX(280%) skewX(-20deg); }
+0%, 60% { transform: translateX(-180%) skewX(-20deg); }
+100% { transform: translateX(280%) skewX(-20deg); }
 }
 @media (max-width: 520px) {
-    .format-options { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .format-options .button:last-child { grid-column: 1 / -1; }
+.editor-actions-v220 { padding: 10px; }
+.editor-command-row .editor-command { font-size: 11px; }
+.editor-popup { padding: 22px 16px; }
 }
 @media (prefers-reduced-motion: reduce) {
-    .format-tools > summary::before { animation: none; display: none; }
-}
-</style>
+.format-trigger::before { animation: none; display: none; }
+}</style>
 
 </head>
 <body id="bodyTheme">
@@ -523,33 +541,25 @@ textarea::placeholder { color: var(--muted); opacity: .9; }
     <h2 id="editorTitle">Text editor</h2>
 </div>
 <div class="toolbar">
-    <details class="format-tools">
-        <summary>
-            <span>Text Formatting</span>
-            <svg class="icon format-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
-        </summary>
-        <div class="format-options" role="group" aria-label="Text formatting functions">
-            <button class="button" type="button" onclick="transformText('upper')">UPPERCASE</button>
-            <button class="button" type="button" onclick="transformText('lower')">lowercase</button>
-            <button class="button" type="button" onclick="transformText('title')">Title Case</button>
-            <button class="button" type="button" onclick="transformText('clean')">Clean spaces</button>
-            <button class="button" type="button" onclick="transformText('slug')">Create slug</button>
-        </div>
-    </details>
+    <button id="formatBtn" class="button format-trigger" type="button" onclick="openTextFormatting()" aria-haspopup="dialog" aria-controls="textFormatDialog" aria-expanded="false">
+        <span>Text Formatting</span>
+        <svg class="icon format-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
 </div>
                     <label class="sr-only" for="mainInput">Text to count, format, or convert</label>
                     <textarea id="mainInput" dir="auto" placeholder="A blank page. A fresh start.&#10;&#10;Type or paste your text here…" spellcheck="false" aria-describedby="editorHelp"></textarea>
-                    <div class="editor-actions">
-                        <p class="editor-hint" id="editorHelp">Your counts update as you type.</p>
-                        <div class="row">
-                            <button class="button subtle danger" type="button" onclick="clearText()">Clear</button>
-                            <button id="copyBtn" class="button primary bg-slate-700" type="button" onclick="copyToClipboard()">
-                                <svg class="icon" aria-hidden="true"><use href="#i-copy"/></svg> Copy text
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
+<div class="editor-actions editor-actions-v220">
+    <div class="editor-command-row">
+        <button id="clearBtn" class="button subtle danger editor-command" type="button" onclick="openEditorAction('clear')" aria-label="Clear/Clear Specific" aria-haspopup="dialog" aria-controls="editorActionDialog"><span>Clear/<wbr>Clear Specific</span></button>
+        <div class="editor-history" role="group" aria-label="Editor history">
+            <button id="undoBtn" class="button" type="button" onclick="undoEditor()" title="Undo (Ctrl/Cmd+Z)" aria-label="Undo" disabled><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5 4 10l5 5M4 10h9a6 6 0 0 1 6 6v3"/></svg></button>
+            <button id="redoBtn" class="button" type="button" onclick="redoEditor()" title="Redo (Ctrl+Y or Ctrl/Cmd+Shift+Z)" aria-label="Redo" disabled><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m15 5 5 5-5 5m5-5h-9a6 6 0 0 0-6 6v3"/></svg></button>
+        </div>
+        <button id="copyBtn" class="button primary editor-command" type="button" onclick="openEditorAction('copy')" aria-label="Copy/Copy Specific" aria-haspopup="dialog" aria-controls="editorActionDialog"><span>Copy/<wbr>Copy Specific</span></button>
+    </div>
+    <p class="editor-hint editor-status" id="editorHelp" role="status" aria-live="polite">Your counts update as you type.</p>
+</div>
+</div>
                 <div class="stats" role="group" aria-label="Live text statistics">
                     <div id="statBox2" class="stat"><strong id="wordCount">0</strong><span>Words</span></div>
                     <div id="statBox5" class="stat"><strong id="charWithSpacesCount">0</strong><span>Characters<br>with spaces</span></div>
@@ -616,8 +626,41 @@ textarea::placeholder { color: var(--muted); opacity: .9; }
         </div>
         <div class="footer-end">
 <div class="feedback"><p id="feedbackTxt">An idea, a suggestion, a hello?</p><a href="mailto:forsoloman@gmail.com">forsoloman@gmail.com</a></div>
-<span id="websiteVersion" class="version" aria-label="Website version 2.1.6">v2.1.6</span>            </div>    </footer>
+<span id="websiteVersion" class="version" aria-label="Website version 2.2.0">v2.2.0</span>
+</div>
+</footer>
 
+<dialog id="editorActionDialog" class="editor-popup" aria-labelledby="editorActionTitle">
+    <button class="button subtle popup-close" type="button" onclick="closeEditorDialog('editorActionDialog')" aria-label="Close editor actions" autofocus>&times;</button>
+    <h2 id="editorActionTitle">Text actions</h2>
+    <div id="editorActionChoices">
+        <p>Choose all text, or select a specific part.</p>
+        <div class="editor-choice-grid">
+            <button id="editorAllBtn" class="button" type="button" onclick="runEditorAllAction()">Clear</button>
+            <button id="editorSpecificBtn" class="button" type="button" onclick="startSpecificSelection()">Clear Specific</button>
+        </div>
+    </div>
+    <div id="editorSelectionPanel" class="hidden">
+        <p id="editorSelectionHelp">All text starts selected. Adjust the selection, then confirm below.</p>
+        <label class="selection-label" for="editorSelectionText">Select the text you want</label>
+        <textarea id="editorSelectionText" dir="auto" readonly spellcheck="false" aria-describedby="editorSelectionHelp"></textarea>
+        <button id="editorSelectionConfirm" class="button primary selection-confirm" type="button" onclick="confirmSpecificSelection()">Clear selected</button>
+    </div>
+    <p id="editorActionStatus" class="action-status" role="status" aria-live="polite"></p>
+</dialog>
+
+<dialog id="textFormatDialog" class="editor-popup" aria-labelledby="textFormatTitle">
+    <button class="button subtle popup-close" type="button" onclick="closeEditorDialog('textFormatDialog')" aria-label="Close text formatting" autofocus>&times;</button>
+    <h2 id="textFormatTitle">Text Formatting</h2>
+    <p>Choose a format to apply to your editor text.</p>
+    <div class="format-options" role="group" aria-label="Text formatting functions">
+        <button class="button" type="button" onclick="applyEditorFormat('upper')">UPPERCASE</button>
+        <button class="button" type="button" onclick="applyEditorFormat('lower')">lowercase</button>
+        <button class="button" type="button" onclick="applyEditorFormat('title')">Title Case</button>
+        <button class="button" type="button" onclick="applyEditorFormat('clean')">Clean spaces</button>
+        <button class="button" type="button" onclick="applyEditorFormat('slug')">Create slug</button>
+    </div>
+</dialog>
     <div id="proModal" class="modal hidden opacity-0" role="dialog" aria-modal="true" aria-labelledby="modalHead" onclick="if (event.target === this) closeProModal()">
         <div id="modalContent" class="modal-card scale-95" tabindex="-1">
             <button class="button subtle modal-close" type="button" onclick="closeProModal()" aria-label="Close upcoming tools">&times;</button>
@@ -714,21 +757,9 @@ textarea::placeholder { color: var(--muted); opacity: .9; }
             textarea.dispatchEvent(new Event('input'));
         }
 
-        function copyToClipboard() {
-            if(!textarea.value) return;
-            navigator.clipboard.writeText(textarea.value);
-            
-            const copyBtn = document.getElementById('copyBtn');
-            const oldHtml = copyBtn.innerHTML;
-            copyBtn.innerHTML = "✓ Copied!";
-            copyBtn.classList.replace('bg-slate-700', 'bg-emerald-600');
-            
-            setTimeout(() => {
-                copyBtn.innerHTML = oldHtml;
-                copyBtn.classList.replace('bg-emerald-600', 'bg-slate-700');
-            }, 1500);
-        }
-
+async function copyToClipboard() {
+    return copyEditorText(textarea.value);
+}
         // Extended Paragraph Generator (Max Limit 20 Verification)
         document.getElementById('loremCount').addEventListener('change', function() {
             if(this.value > 20) this.value = 20;
@@ -1143,7 +1174,233 @@ document.addEventListener('keydown', event => {
             if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
             if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
         });
+// v2.2.0 — editor history stays in memory for this page only.
+const editorHistory = [editorSnapshot()];
+let editorHistoryIndex = 0;
+let restoringEditor = false;
+let editorActionMode = 'clear';
+let editorActionBusy = false;
+const selectionField = document.getElementById('editorSelectionText');
 
-    </script>
+function editorSnapshot() {
+    return { text: textarea.value, start: textarea.selectionStart, end: textarea.selectionEnd, scroll: textarea.scrollTop };
+}
+function editorMessage(message) {
+    document.getElementById('editorHelp').textContent = message;
+}
+function refreshEditorHistory() {
+    document.getElementById('undoBtn').disabled = editorHistoryIndex === 0;
+    document.getElementById('redoBtn').disabled = editorHistoryIndex === editorHistory.length - 1;
+}
+function rememberEditorSelection() {
+    const current = editorHistory[editorHistoryIndex];
+    if (!restoringEditor && current.text === textarea.value) Object.assign(current, editorSnapshot());
+}
+function recordEditorChange() {
+    if (restoringEditor || editorHistory[editorHistoryIndex].text === textarea.value) return;
+    editorHistory.splice(editorHistoryIndex + 1);
+    editorHistory.push(editorSnapshot());
+    editorHistoryIndex = editorHistory.length - 1;
+    while (editorHistory.length > 100 || (editorHistory.length > 2 && editorHistory.reduce((sum, state) => sum + state.text.length, 0) > 2000000)) {
+        editorHistory.shift();
+        editorHistoryIndex--;
+    }
+    refreshEditorHistory();
+    editorMessage('Your counts update as you type.');
+}
+function moveEditorHistory(direction) {
+    const next = editorHistoryIndex + direction;
+    if (next < 0 || next >= editorHistory.length) return;
+    rememberEditorSelection();
+    editorHistoryIndex = next;
+    const state = editorHistory[next];
+    restoringEditor = true;
+    textarea.value = state.text;
+    textarea.focus({ preventScroll: true });
+    textarea.setSelectionRange(state.start, state.end);
+    textarea.scrollTop = state.scroll;
+    textarea.dispatchEvent(new Event('input'));
+    restoringEditor = false;
+    refreshEditorHistory();
+    editorMessage(direction < 0 ? 'Change undone.' : 'Change redone.');
+}
+function undoEditor() { moveEditorHistory(-1); }
+function redoEditor() { moveEditorHistory(1); }
+
+textarea.addEventListener('input', event => {
+    if (restoringEditor) return;
+    if (event.inputType === 'historyUndo') undoEditor();
+    else if (event.inputType === 'historyRedo') redoEditor();
+    else recordEditorChange();
+});
+textarea.addEventListener('beforeinput', event => {
+    rememberEditorSelection();
+    if (event.cancelable && ['historyUndo', 'historyRedo'].includes(event.inputType)) {
+        event.preventDefault();
+        event.inputType === 'historyUndo' ? undoEditor() : redoEditor();
+    }
+});
+['select', 'keyup', 'pointerup', 'scroll', 'blur'].forEach(name => textarea.addEventListener(name, rememberEditorSelection));
+textarea.addEventListener('keydown', event => {
+    if (event.isComposing || event.altKey || !(event.ctrlKey || event.metaKey)) return;
+    const key = event.key.toLowerCase();
+    if (key === 'z' || (key === 'y' && !event.shiftKey)) {
+        event.preventDefault();
+        key === 'y' || event.shiftKey ? redoEditor() : undoEditor();
+    }
+});
+refreshEditorHistory();
+
+function showEditorDialog(id) {
+    const dialog = document.getElementById(id);
+    if (!dialog.open) dialog.showModal();
+    document.body.classList.add('editor-popup-open');
+}
+function closeEditorDialog(id) {
+    const dialog = document.getElementById(id);
+    if (dialog.open) dialog.close();
+}
+['editorActionDialog', 'textFormatDialog'].forEach(id => {
+    const dialog = document.getElementById(id);
+    dialog.addEventListener('close', () => {
+        document.body.classList.toggle('editor-popup-open', !!document.querySelector('.editor-popup[open]'));
+        document.getElementById('formatBtn').setAttribute('aria-expanded', String(document.getElementById('textFormatDialog').open));
+        if (id === 'editorActionDialog') selectionField.value = '';
+    });
+    dialog.addEventListener('click', event => {
+        if (event.target !== dialog) return;
+        const rect = dialog.getBoundingClientRect();
+        if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
+    });
+    dialog.addEventListener('keydown', event => {
+        if (event.key !== 'Tab') return;
+        const items = [...dialog.querySelectorAll('button, textarea')].filter(element => !element.disabled && element.getClientRects().length);
+        const first = items[0];
+        const last = items[items.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    });
+});
+
+function openTextFormatting() {
+    rememberEditorSelection();
+    document.querySelectorAll('#textFormatDialog .format-options button').forEach(button => { button.disabled = !textarea.value.trim(); });
+    showEditorDialog('textFormatDialog');
+    document.getElementById('formatBtn').setAttribute('aria-expanded', 'true');
+}
+function applyEditorFormat(type) {
+    transformText(type);
+    closeEditorDialog('textFormatDialog');
+    textarea.focus({ preventScroll: true });
+    editorMessage('Text formatting applied. Undo can restore the previous text.');
+}
+function openEditorAction(mode) {
+    if (editorActionBusy) return;
+    rememberEditorSelection();
+    editorActionMode = mode;
+    const label = mode === 'clear' ? 'Clear' : 'Copy';
+    document.getElementById('editorActionTitle').textContent = label + ' text';
+    document.getElementById('editorAllBtn').textContent = label;
+    document.getElementById('editorSpecificBtn').textContent = label + ' Specific';
+    document.getElementById('editorAllBtn').disabled = !textarea.value;
+    document.getElementById('editorSpecificBtn').disabled = !textarea.value;
+    document.getElementById('editorActionChoices').classList.remove('hidden');
+    document.getElementById('editorSelectionPanel').classList.add('hidden');
+    document.getElementById('editorActionStatus').textContent = textarea.value ? '' : 'Your editor is empty.';
+    showEditorDialog('editorActionDialog');
+}
+async function runEditorAllAction() {
+    if (editorActionBusy || !textarea.value) return;
+    if (editorActionMode === 'clear') {
+        clearText();
+        closeEditorDialog('editorActionDialog');
+        textarea.focus({ preventScroll: true });
+        editorMessage('All text cleared. Undo can restore it.');
+        return;
+    }
+    editorActionBusy = true;
+    document.getElementById('editorAllBtn').disabled = true;
+    document.getElementById('editorSpecificBtn').disabled = true;
+    try {
+        if (await copyToClipboard()) closeEditorDialog('editorActionDialog');
+    } finally {
+        editorActionBusy = false;
+        document.getElementById('editorAllBtn').disabled = !textarea.value;
+        document.getElementById('editorSpecificBtn').disabled = !textarea.value;
+    }
+}
+function startSpecificSelection() {
+    if (editorActionBusy || !textarea.value) return;
+    document.getElementById('editorActionChoices').classList.add('hidden');
+    document.getElementById('editorSelectionPanel').classList.remove('hidden');
+    document.getElementById('editorSelectionConfirm').textContent = editorActionMode === 'clear' ? 'Clear selected' : 'Copy selected';
+    selectionField.value = textarea.value;
+    selectionField.focus();
+    selectionField.select();
+    selectionField.scrollTop = 0;
+    updateSpecificSelection();
+}
+function updateSpecificSelection() {
+    const selected = selectionField.selectionEnd > selectionField.selectionStart;
+    document.getElementById('editorSelectionConfirm').disabled = editorActionBusy || !selected;
+    document.getElementById('editorActionStatus').textContent = selected ? 'Selection ready. Adjust it if needed, then confirm.' : 'Select some text first.';
+}
+['select', 'keyup', 'pointerup'].forEach(name => selectionField.addEventListener(name, updateSpecificSelection));
+document.addEventListener('selectionchange', () => {
+    if (document.activeElement === selectionField) updateSpecificSelection();
+});
+async function confirmSpecificSelection() {
+    if (editorActionBusy) return;
+    const start = selectionField.selectionStart;
+    const end = selectionField.selectionEnd;
+    if (end <= start) { updateSpecificSelection(); return; }
+    if (editorActionMode === 'clear') {
+        if (textarea.value !== selectionField.value) { startSpecificSelection(); return; }
+        textarea.value = textarea.value.slice(0, start) + textarea.value.slice(end);
+        textarea.setSelectionRange(start, start);
+        textarea.dispatchEvent(new Event('input'));
+        closeEditorDialog('editorActionDialog');
+        textarea.focus({ preventScroll: true });
+        editorMessage('Selected text cleared. Undo can restore it.');
+        return;
+    }
+    editorActionBusy = true;
+    document.getElementById('editorSelectionConfirm').disabled = true;
+    try {
+        if (await copyEditorText(selectionField.value.slice(start, end))) closeEditorDialog('editorActionDialog');
+    } finally {
+        editorActionBusy = false;
+        document.getElementById('editorSelectionConfirm').disabled = selectionField.selectionEnd <= selectionField.selectionStart;
+    }
+}
+async function copyEditorText(text) {
+    if (!text) return false;
+    let copied = false;
+    try {
+        await navigator.clipboard.writeText(text);
+        copied = true;
+    } catch (error) {
+        const savedFocus = document.activeElement;
+        const savedStart = selectionField.selectionStart;
+        const savedEnd = selectionField.selectionEnd;
+        const helper = document.createElement('textarea');
+        helper.value = text;
+        helper.readOnly = true;
+        helper.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;pointer-events:none;';
+        const host = document.getElementById('editorActionDialog');
+        (host.open ? host : document.body).appendChild(helper);
+        try { helper.focus(); helper.select(); copied = document.execCommand('copy'); }
+        catch (copyError) { copied = false; }
+        finally {
+            helper.remove();
+            savedFocus?.focus({ preventScroll: true });
+            selectionField.setSelectionRange(savedStart, savedEnd);
+        }
+    }
+    const message = copied ? 'Text copied.' : 'Copy failed. Select the text and use your device\'s Copy option.';
+    editorMessage(message);
+    document.getElementById('editorActionStatus').textContent = message;
+    return copied;
+}    </script>
 </body>
 </html>
