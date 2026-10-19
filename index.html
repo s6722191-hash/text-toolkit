@@ -857,12 +857,14 @@ function openOCRModal() {
 }
 
 function closeOCRModal() {
-    if (isOCRProcessing) return;
+    if (isOCRProcessing) {
+        ocrPauseRequested = true;
+        if (ocrRequestAction === 'check') ocrRequestController?.abort();
+    }
 
     const modal = document.getElementById('ocrModal');
     modal.classList.add('opacity-0');
     document.getElementById('ocrModalContent').classList.add('scale-95');
-
     setTimeout(() => modal.classList.add('hidden'), 300);
 }
 
@@ -914,7 +916,8 @@ function handleOCRFile(file) {
     document.getElementById('ocrPreviewWrap').classList.remove('hidden');
     document.getElementById('ocrResultWrap').classList.add('hidden');
     document.getElementById('ocrProgressWrap').classList.add('hidden');
-    document.getElementById('ocrExtractBtn').disabled = false;
+        document.getElementById('ocrExtractBtn').disabled = false;
+    document.getElementById('ocrExtractBtn').textContent = ocrJobs.has(file) ? 'Check result again' : 'Extract text';
 }
 
 function resetOCRImage() {
@@ -960,90 +963,158 @@ ocrDropZone.addEventListener('drop', event => {
     handleOCRFile(event.dataTransfer.files[0]);
 });
 
+const ocrJobs = new WeakMap();
+let ocrPauseRequested = false;
+let ocrRequestController = null;
+let ocrRequestAction = '';
+
 async function extractImageText() {
     if (!selectedOCRFile || isOCRProcessing) return;
-    
+
     const file = selectedOCRFile;
     const button = document.getElementById('ocrExtractBtn');
     const progressWrap = document.getElementById('ocrProgressWrap');
     const resultWrap = document.getElementById('ocrResultWrap');
     const resultField = document.getElementById('ocrResult');
     const status = document.getElementById('ocrStatus');
-    
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 70000);
-    
+    let job = ocrJobs.get(file);
+    if (job && job.expiresAt <= Date.now()) {
+        ocrJobs.delete(file);
+        showOCRError('Previous OCR session expired. Choose the image again to start a new job.');
+        button.textContent = 'Extract text again';
+        return;
+    }
+
+    const startedAt = Date.now();
+    let phase = job ? 'Checking the existing OCR job' : 'Uploading image';
+    const updateStatus = () => {
+        status.textContent = phase + '… ' + Math.floor((Date.now() - startedAt) / 1000) + 's elapsed.';
+    };
+
+    async function request(action, body, timeoutMs = 65000) {
+        const controller = new AbortController();
+        ocrRequestController = controller;
+        ocrRequestAction = action;
+        const timer = setTimeout(() => controller.abort(), timeoutMs);
+        try {
+            const response = await fetch('/api/ocr', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': action === 'submit' ? 'application/octet-stream' : 'application/json',
+                    'X-OCR-Action': action
+                },
+                body: action === 'submit' ? body : JSON.stringify(body),
+                signal: controller.signal
+            });
+            let data;
+            try {
+                data = await response.json();
+            } catch {
+                const error = new Error('The OCR service did not return a valid response.');
+                error.retryable = action === 'check' && (controller.signal.aborted || response.status >= 500);
+                throw error;
+            }
+            if (!data || typeof data !== 'object') throw new Error('Invalid OCR response.');
+            if (!response.ok) {
+                const error = new Error(typeof data.error === 'string' ? data.error : 'Text extraction failed.');
+                error.retryable = action === 'check' && (data.retryable === true ||
+                    (!('retryable' in data) && response.status >= 500));
+                error.discardJob = [400, 410, 422].includes(response.status);
+                throw error;
+            }
+            if (data.model !== 'PaddleOCR-VL') throw new Error('Unexpected OCR model in response.');
+            return data;
+        } catch (error) {
+            if (controller.signal.aborted || error instanceof TypeError) {
+                const connectionError = new Error(action === 'submit'
+                    ? 'Could not confirm the upload. Please wait before trying again.'
+                    : 'Connection interrupted. Checking the same OCR job again.');
+                connectionError.retryable = action === 'check';
+                throw connectionError;
+            }
+            throw error;
+        } finally {
+            clearTimeout(timer);
+            if (ocrRequestController === controller) {
+                ocrRequestController = null;
+                ocrRequestAction = '';
+            }
+        }
+    }
+
     clearOCRError();
+    ocrPauseRequested = false;
     isOCRProcessing = true;
     button.disabled = true;
     ocrInput.disabled = true;
     button.textContent = 'Reading image…';
-    
     resultField.value = '';
-    progressWrap.classList.remove('hidden');
     resultWrap.classList.add('hidden');
-    status.textContent = 'Sending image to PaddleOCR-VL. Please wait…';
+    progressWrap.classList.remove('hidden');
     resultWrap.setAttribute('aria-busy', 'true');
-    
+    updateStatus();
+    const progressTimer = setInterval(updateStatus, 1000);
+
     try {
-        const response = await fetch('/api/ocr', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/octet-stream'
-            },
-            body: file,
-            signal: controller.signal
-        });
-        
-        let result;
-        
-        try {
-            result = await response.json();
-        } catch {
-            throw new Error('The OCR service is not available right now.');
+        if (!job) {
+            const submitted = await request('submit', file);
+            if (typeof submitted.ticket !== 'string' || !Number.isFinite(submitted.expiresAt)) {
+                throw new Error('OCR upload was not confirmed. Please try later.');
+            }
+            job = { ticket: submitted.ticket, expiresAt: submitted.expiresAt };
+            ocrJobs.set(file, job);
         }
-        
-        if (!response.ok) {
-            throw new Error(result.error || 'Text extraction failed.');
+
+        const deadline = Date.now() + 180000;
+        while (Date.now() < deadline && !ocrPauseRequested) {
+            phase = 'Processing image';
+            updateStatus();
+            let result;
+            try {
+                result = await request('check', { ticket: job.ticket }, Math.min(65000, deadline - Date.now()));
+            } catch (error) {
+                if (error.discardJob) ocrJobs.delete(file);
+                if (ocrPauseRequested) break;
+                if (!error.retryable) throw error;
+                phase = 'Connection slow; checking the same job again';
+                updateStatus();
+            }
+            if (ocrPauseRequested) break;
+            if (result?.state === 'done') {
+                if (typeof result.text !== 'string') throw new Error('Invalid OCR text response.');
+                ocrJobs.delete(file);
+                const text = result.text.trim();
+                if (!text) throw new Error('No readable text was found. Try a clearer image.');
+                resultField.value = text;
+                resultWrap.classList.remove('hidden');
+                phase = 'Text extracted. Review it before use';
+                status.textContent = phase + '.';
+                return;
+            }
+            if (result && !['pending', 'running'].includes(result.state)) {
+                throw new Error('Unexpected OCR job status.');
+            }
+            if (Date.now() < deadline) {
+                await new Promise(resolve => setTimeout(resolve, Math.min(5000, deadline - Date.now())));
+            }
         }
-        
-        if (
-            typeof result.text !== 'string' ||
-            result.model !== 'PaddleOCR-VL'
-        ) {
-            throw new Error('The OCR service returned an unexpected result.');
+
+        if (!ocrPauseRequested) {
+            showOCRError('OCR is taking longer than expected. Tap Check result again to continue the same job.');
         }
-        
-        const extractedText = result.text.trim();
-        
-        if (!extractedText) {
-            showOCRError('No readable text was found. Try a clearer image.');
-            progressWrap.classList.add('hidden');
-        } else {
-            resultField.value = extractedText;
-            resultWrap.classList.remove('hidden');
-            status.textContent =
-                'Text extracted with PaddleOCR-VL. Review it before use.';
-        }
+        progressWrap.classList.add('hidden');
     } catch (error) {
-        const message = controller.signal.aborted ?
-            'OCR timed out. Please try again later.' :
-            error instanceof TypeError ?
-            'Could not connect to OCR. Check your internet connection.' :
-            error.message;
-        
-        showOCRError(message || 'Text extraction failed. Please try again.');
+        showOCRError(error.message || 'Text extraction failed. Please try again.');
         progressWrap.classList.add('hidden');
     } finally {
-        clearTimeout(timeout);
+        clearInterval(progressTimer);
         resultWrap.removeAttribute('aria-busy');
         isOCRProcessing = false;
         ocrInput.disabled = false;
         button.disabled = !selectedOCRFile;
-        button.textContent = 'Extract text again';
+        button.textContent = ocrJobs.has(file) ? 'Check result again' : 'Extract text again';
     }
 }
-
 async function copyOCRResult() {
     const result = document.getElementById('ocrResult');
 
