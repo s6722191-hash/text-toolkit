@@ -4,7 +4,7 @@ const { tmpdir } = require('node:os');
 const { join } = require('node:path');
 const { createHmac, timingSafeEqual } = require('node:crypto');
 
-const MODEL = Model.PaddleOCRVL;
+const MODEL = Model.PaddleOCRVL16;
 
 function imageExtension(bytes) {
   if (bytes.subarray(0, 8).equals(Buffer.from('89504e470d0a1a0a', 'hex'))) return 'png';
@@ -15,7 +15,7 @@ function imageExtension(bytes) {
 }
 
 function signature(payload, token) {
-  return createHmac('sha256', token).update('smarttext-ocr-v1:' + payload).digest();
+    return createHmac('sha256', token).update('smarttext-ocr-v1:' + MODEL + ':' + payload).digest();
 }
 
 function createTicket(jobId, token) {
