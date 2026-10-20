@@ -129,7 +129,10 @@ module.exports = async function handler(req, res) {
       const submitted = await client.submitDocumentParsing({
         filePath,
         model: MODEL,
-        options: { useLayoutDetection: true }
+                options: {
+          useLayoutDetection: false,
+          promptLabel: 'ocr'
+        }
       }, options);
       return res.status(202).json({
         ...createTicket(submitted.jobId, token),
