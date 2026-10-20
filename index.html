@@ -1022,7 +1022,7 @@ async function extractImageText() {
                 error.discardJob = [400, 410, 422].includes(response.status);
                 throw error;
             }
-            if (data.model !== 'PaddleOCR-VL') throw new Error('Unexpected OCR model in response.');
+                        if (data.model !== 'PaddleOCR-VL-1.6') throw new Error('Unexpected OCR model in response.');
             return data;
         } catch (error) {
             if (controller.signal.aborted || error instanceof TypeError) {
